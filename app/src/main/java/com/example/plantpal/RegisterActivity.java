@@ -73,10 +73,12 @@ public class RegisterActivity extends AppCompatActivity {
                                                 Toast.makeText(RegisterActivity.this, "Passwords do not match.", Toast.LENGTH_SHORT).show();
                                                 return;
                                             }
-                                            // Register the user in the database
                                             User user = new User(username, email, password);
                                             usersRef.child(username).setValue(user);
                                             Toast.makeText(RegisterActivity.this, "User registered successfully.", Toast.LENGTH_SHORT).show();
+
+                                            Intent intent = new Intent(RegisterActivity.this, LandingPageActivity.class);
+                                            startActivity(intent);
                                         }
                                     }
                                 }
