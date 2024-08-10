@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/dummy_item"
+        android:enabled="false"
+        android:visible="false"/>
+    <item
+        android:id="@+id/nav_plant_scan"
+        android:icon="@drawable/plant_scan_icon"
+        android:title="Scan"/>
+    <item
+        android:id="@+id/nav_plant_archive"
+        android:icon="@drawable/plant_archive_icon"
+        android:title="Plant Archive"/>
+    <item
+        android:id="@+id/nav_community_hub"
+        android:icon="@drawable/community_hub_icon"
+        android:title="Community Hub"/>
+    <item
+        android:id="@+id/nav_my_garden"
+        android:icon="@drawable/my_garden_icon"
+        android:title="My Garden"/>
+</menu>
