@@ -27,6 +27,18 @@
         <activity
             android:name=".LandingPageActivity">
         </activity>
+        <activity
+            android:name=".ScanActivity">
+        </activity>
+        <activity
+            android:name=".PlantArchiveActivity">
+        </activity>
+        <activity
+            android:name=".CommunityForumActivity">
+        </activity>
+        <activity
+            android:name=".MyGardenActivity">
+        </activity>
     </application>
 
 </manifest>
