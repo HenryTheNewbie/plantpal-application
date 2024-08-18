@@ -98,7 +98,8 @@
             android:padding="14dp"
             android:fontFamily="@font/agrandir_regular"
             android:clickable="true"
-            android:focusable="true"/>
+            android:focusable="true"
+            android:onClick="openForgotPasswordPage"/>
     </RelativeLayout>
 
     <com.google.android.material.card.MaterialCardView

@@ -100,4 +100,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, LandingPageActivity.class);
         startActivity(intent);
     }
+
+    public void openForgotPasswordPage(View view) {
+        Intent intent = new Intent(this, ForgotPasswordActivity.class);
+        startActivity(intent);
+    }
 }

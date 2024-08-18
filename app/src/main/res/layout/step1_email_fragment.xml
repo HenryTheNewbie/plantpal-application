@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".Step1EmailFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingBottom="24dp">
+
+        <ImageView
+            android:id="@+id/back_arrow"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/back_arrow_icon"
+            android:contentDescription="Back"
+            android:padding="8dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="8dp" />
+
+        <TextView
+            android:id="@+id/forgot_password_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Forgot Password"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:fontFamily="@font/agrandir_wide" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/enter_email_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enter Email Address"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/agrandir_regular"
+        android:layout_marginLeft="18dp"
+        android:paddingTop="48dp"
+        android:paddingBottom="8dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:cardCornerRadius="30dp"
+            app:cardElevation="10dp">
+
+            <EditText
+                android:id="@+id/email"
+                android:layout_width="345dp"
+                android:layout_height="50dp"
+                android:background="@drawable/edit_field_box"
+                android:drawableStart="@drawable/email_icon"
+                android:drawablePadding="8dp"
+                android:hint="Email"
+                android:padding="8dp"
+                android:textColor="@color/black"
+                android:textColorHighlight="@color/cardview_dark_background"
+                android:fontFamily="@font/agrandir_regular"/>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:cardCornerRadius="30dp"
+            app:cardElevation="10dp">
+
+            <Button
+                android:id="@+id/send_email_button"
+                android:layout_width="345dp"
+                android:layout_height="50dp"
+                android:background="@drawable/edit_field_box"
+                android:text="Send Email"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:fontFamily="@font/agrandir_regular"/>
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+
+</LinearLayout>

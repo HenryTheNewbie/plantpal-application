@@ -30,6 +30,15 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
+    packaging {
+        resources {
+            excludes.add("META-INF/mailcap.default")
+            excludes.add("META-INF/mimetypes.default")
+            excludes.add("META-INF/NOTICE.md")
+            excludes.add("META-INF/LICENSE.md")
+        }
+    }
 }
 
 dependencies {
@@ -38,6 +47,9 @@ dependencies {
     implementation("com.google.firebase:firebase-database:20.3.1")
     implementation("com.google.firebase:firebase-auth:22.3.1")
     implementation("com.google.firebase:firebase-storage:20.3.0")
+    implementation("io.github.chaosleung:pinview:1.4.4")
+    implementation("com.sun.mail:android-mail:1.6.6")
+    implementation("com.sun.mail:android-activation:1.6.6")
 
     implementation(libs.appcompat)
     implementation(libs.material)
