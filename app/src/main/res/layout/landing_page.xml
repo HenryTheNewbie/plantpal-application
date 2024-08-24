@@ -7,18 +7,250 @@
     android:layout_height="match_parent"
     tools:context=".LandingPageActivity">
 
-    <Button
-        android:id="@+id/temporary_back_button"
+    <RelativeLayout
+        android:id="@+id/landing_page_header"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="@drawable/landing_page_header"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:elevation="20dp"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/header_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Welcome to PlantPal,"
+            android:textSize="20sp"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:fontFamily="@font/agrandir_wide"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"/>
+
+        <TextView
+            android:id="@+id/header_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Username."
+            android:textSize="20sp"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:layout_below="@id/header_title"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/agrandir_wide"/>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/navigation_hint_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/edit_field_box"
-        android:text="Back"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        android:fontFamily="@font/agrandir_wide"
-        android:layout_centerInParent="true"
-        android:layout_marginBottom="20dp"/>
+        android:text="Tap on the cards below for quick access."
+        android:textSize="16sp"
+        android:textColor="#000000"
+        android:layout_below="@id/landing_page_header"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/agrandir_regular"/>
+
+    <TextView
+        android:id="@+id/navigation_hint_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="You can also use the navigation bar at the bottom."
+        android:textSize="16sp"
+        android:textColor="#000000"
+        android:layout_below="@id/navigation_hint_1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/agrandir_regular"/>
+
+    <!-- Cards for Quick Navigation -->
+    <LinearLayout
+        android:id="@+id/navigation_cards"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/navigation_hint_2"
+        android:layout_marginTop="24dp"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <!-- Row 1 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- Card 1 -->
+            <RelativeLayout
+                android:id="@+id/scan_card"
+                android:layout_width="0dp"
+                android:layout_height="170dp"
+                android:layout_weight="1"
+                android:background="@drawable/custom_card_background"
+                android:paddingTop="16dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:elevation="4dp">
+
+                <TextView
+                    android:id="@+id/card1_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Scan"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginBottom="8dp"
+                    android:fontFamily="@font/agrandir_wide"/>
+
+                <ImageView
+                    android:id="@+id/card1_icon"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:src="@drawable/landing_page_scan_icon"
+                    android:layout_below="@id/card1_text"
+                    android:layout_centerHorizontal="true"
+                    android:scaleType="fitCenter"
+                    android:layout_marginTop="-10dp"/>
+            </RelativeLayout>
+
+            <!-- Card 2 -->
+            <RelativeLayout
+                android:id="@+id/plant_archive_card"
+                android:layout_width="0dp"
+                android:layout_height="170dp"
+                android:layout_weight="1"
+                android:background="@drawable/custom_card_background"
+                android:paddingTop="16dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:elevation="4dp">
+
+                <TextView
+                    android:id="@+id/card2_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Plant Archive"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginBottom="8dp"
+                    android:fontFamily="@font/agrandir_wide"/>
+
+                <ImageView
+                    android:id="@+id/card2_icon"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:src="@drawable/landing_page_plant_archive_icon"
+                    android:layout_below="@id/card2_text"
+                    android:layout_centerHorizontal="true"
+                    android:scaleType="fitCenter"
+                    android:layout_marginTop="-10dp"/>
+            </RelativeLayout>
+        </LinearLayout>
+
+        <!-- Row 2 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- Card 3 -->
+            <RelativeLayout
+                android:id="@+id/community_hub_card"
+                android:layout_width="0dp"
+                android:layout_height="170dp"
+                android:layout_weight="1"
+                android:background="@drawable/custom_card_background"
+                android:paddingTop="16dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:elevation="4dp">
+
+                <TextView
+                    android:id="@+id/card3_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Community Hub"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginBottom="8dp"
+                    android:fontFamily="@font/agrandir_wide"/>
+
+                <ImageView
+                    android:id="@+id/card3_icon"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:src="@drawable/landing_page_community_hub_icon"
+                    android:layout_below="@id/card3_text"
+                    android:layout_centerHorizontal="true"
+                    android:scaleType="fitCenter"
+                    android:layout_marginTop="-10dp"/>
+            </RelativeLayout>
+
+            <!-- Card 4 -->
+            <RelativeLayout
+                android:id="@+id/my_garden_card"
+                android:layout_width="0dp"
+                android:layout_height="170dp"
+                android:layout_weight="1"
+                android:background="@drawable/custom_card_background"
+                android:paddingTop="16dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:elevation="4dp">
+
+                <TextView
+                    android:id="@+id/card4_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="My Garden"
+                    android:textColor="#000000"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginBottom="8dp"
+                    android:fontFamily="@font/agrandir_wide"/>
+
+                <ImageView
+                    android:id="@+id/card4_icon"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:src="@drawable/landing_page_my_garden_icon"
+                    android:layout_below="@id/card4_text"
+                    android:layout_centerHorizontal="true"
+                    android:scaleType="fitCenter"
+                    android:layout_marginTop="-10dp"/>
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navigation_bar"

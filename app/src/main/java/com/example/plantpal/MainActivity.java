@@ -72,7 +72,12 @@ public class MainActivity extends AppCompatActivity {
                             assert user != null;
                             if (user.getPassword().equals(password)) {
                                 userFound = true;
-                                sharedPreferences.edit().putBoolean("rememberMe", rememberMeCheckBox.isChecked()).apply();
+
+                                sharedPreferences.edit()
+                                        .putBoolean("rememberMe", rememberMeCheckBox.isChecked())
+                                        .putString("username", user.getUsername())
+                                        .apply();
+
                                 openLandingPage(null);
                                 break;
                             }
