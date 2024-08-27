@@ -19,7 +19,7 @@ public class PlantArchiveActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.scan_page);
+        setContentView(R.layout.plant_archive_page);
 
         temporaryBackButton = findViewById(R.id.temporary_back_button);
         temporaryBackButton.setOnClickListener(view -> finish());

@@ -48,8 +48,10 @@ dependencies {
     implementation("com.google.firebase:firebase-auth:22.3.1")
     implementation("com.google.firebase:firebase-storage:20.3.0")
     implementation("io.github.chaosleung:pinview:1.4.4")
+    implementation("com.squareup.picasso:picasso:2.8")
     implementation("com.sun.mail:android-mail:1.6.6")
     implementation("com.sun.mail:android-activation:1.6.6")
+    implementation("com.google.android.material:material:1.8.0")
 
     implementation(libs.appcompat)
     implementation(libs.material)

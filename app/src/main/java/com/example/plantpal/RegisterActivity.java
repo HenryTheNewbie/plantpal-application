@@ -70,7 +70,7 @@ public class RegisterActivity extends AppCompatActivity {
                                                 Toast.makeText(RegisterActivity.this, "Passwords do not match.", Toast.LENGTH_SHORT).show();
                                                 return;
                                             }
-                                            User user = new User(username, email, password);
+                                            User user = new User(username, email, password, "", "");
                                             usersRef.child(username).setValue(user);
                                             Toast.makeText(RegisterActivity.this, "User registered successfully.", Toast.LENGTH_SHORT).show();
 
