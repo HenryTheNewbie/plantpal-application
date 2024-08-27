@@ -7,18 +7,128 @@
     android:layout_height="match_parent"
     tools:context=".MyGardenActivity">
 
-    <Button
-        android:id="@+id/temporary_back_button"
-        android:layout_width="wrap_content"
+    <!-- Page Header -->
+    <RelativeLayout
+        android:id="@+id/my_garden_header"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/edit_field_box"
-        android:text="Back"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        android:fontFamily="@font/agrandir_wide"
-        android:layout_centerInParent="true"
-        android:layout_marginBottom="20dp"/>
+        android:background="@drawable/page_header"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:elevation="20dp"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/my_garden_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="My Garden"
+            android:textSize="20sp"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:fontFamily="@font/agrandir_wide"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"/>
+
+        <ImageView
+            android:id="@+id/settings_icon"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/app_settings_icon"
+            android:clickable="true"/>
+    </RelativeLayout>
+
+    <!-- Profile Section -->
+    <RelativeLayout
+        android:id="@+id/profile_section"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/my_garden_header"
+        android:padding="16dp">
+
+        <!-- Profile Picture -->
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/profile_picture"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_profile_placeholder"
+            android:scaleType="centerCrop"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            app:shapeAppearanceOverlay="@style/CircleImage"/>
+
+        <!-- Username -->
+        <TextView
+            android:id="@+id/my_garden_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/profile_picture"
+            android:layout_alignTop="@id/profile_picture"
+            android:layout_marginEnd="8dp"
+            android:text="Username"
+            android:textSize="18sp"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:maxWidth="150dp"
+            android:fontFamily="@font/agrandir_wide"/>
+
+        <!-- Bio -->
+        <TextView
+            android:id="@+id/my_garden_bio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/my_garden_username"
+            android:layout_alignStart="@id/my_garden_username"
+            android:layout_marginTop="8dp"
+            android:text="This is the user's bio."
+            android:textSize="14sp"
+            android:textColor="#666666"
+            android:maxWidth="150dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:fontFamily="@font/agrandir_regular"/>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@id/my_garden_username"
+            app:cardCornerRadius="30dp"
+            app:cardElevation="10dp">
+
+            <Button
+                android:id="@+id/edit_profile_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Edit Profile"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="#000000"
+                android:background="@drawable/edit_field_box"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="6dp"
+                android:fontFamily="@font/agrandir_regular"/>
+        </com.google.android.material.card.MaterialCardView>
+
+    </RelativeLayout>
+
+    <!-- Scrollable Section for Saved Plants -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/profile_section"
+        android:layout_above="@id/navigation_bar"
+        android:padding="16dp"
+        android:background="#FFFFFF">
+
+    </ScrollView>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navigation_bar"

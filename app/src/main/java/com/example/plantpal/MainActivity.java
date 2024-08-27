@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
                                 sharedPreferences.edit()
                                         .putBoolean("rememberMe", rememberMeCheckBox.isChecked())
                                         .putString("username", user.getUsername())
+                                        .putString("email", email)
                                         .apply();
 
                                 openLandingPage(null);

@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EditProfileActivity">
+
+    <!-- Page Header -->
+    <RelativeLayout
+        android:id="@+id/edit_profile_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/page_header"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:elevation="20dp"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/edit_profile_back_button"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_alignParentStart="true"
+            android:src="@drawable/back_arrow_icon"
+            android:clickable="true"/>
+
+        <TextView
+            android:id="@+id/edit_profile_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Edit Profile"
+            android:textSize="20sp"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:fontFamily="@font/agrandir_wide"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/edit_profile_form"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:layout_below="@id/edit_profile_header"
+        android:padding="16dp">
+
+        <FrameLayout
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_gravity="center">
+
+            <!-- Profile Picture -->
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/edit_profile_picture"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:src="@drawable/ic_profile_placeholder"
+                app:shapeAppearanceOverlay="@style/CircleImage"
+                android:scaleType="centerCrop" />
+
+            <!-- Tint overlay -->
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/tint_overlay"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                app:shapeAppearanceOverlay="@style/CircleImage"
+                android:scaleType="centerCrop"
+                android:visibility="visible">
+                <!-- Tint color added programmatically -->
+            </com.google.android.material.imageview.ShapeableImageView>
+
+            <!-- Edit text -->
+            <TextView
+                android:id="@+id/edit_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Edit"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:layout_gravity="center"
+                android:visibility="visible"
+                android:fontFamily="@font/agrandir_regular" />
+        </FrameLayout>
+
+        <!-- Username -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Username"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/agrandir_regular"
+            android:layout_marginTop="14dp"
+            android:layout_gravity="start"
+            android:layout_marginStart="18dp"
+            android:paddingBottom="4dp" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:cardCornerRadius="30dp"
+            app:cardElevation="10dp">
+
+            <EditText
+                android:id="@+id/edit_username"
+                android:layout_width="345dp"
+                android:layout_height="50dp"
+                android:background="@drawable/edit_field_box"
+                android:drawableStart="@drawable/account_icon"
+                android:drawablePadding="8dp"
+                android:hint="Username"
+                android:padding="8dp"
+                android:textColor="@color/black"
+                android:textColorHighlight="@color/cardview_dark_background"
+                android:fontFamily="@font/agrandir_regular"/>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Bio -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bio"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/agrandir_regular"
+            android:layout_marginTop="14dp"
+            android:layout_gravity="start"
+            android:layout_marginStart="18dp"
+            android:paddingBottom="4dp" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:cardCornerRadius="30dp"
+            app:cardElevation="10dp">
+
+            <EditText
+                android:id="@+id/edit_bio"
+                android:layout_width="345dp"
+                android:layout_height="50dp"
+                android:background="@drawable/edit_field_box"
+                android:drawableStart="@drawable/bio_icon"
+                android:drawablePadding="8dp"
+                android:hint="Bio"
+                android:padding="8dp"
+                android:textColor="@color/black"
+                android:textColorHighlight="@color/cardview_dark_background"
+                android:fontFamily="@font/agrandir_regular"/>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- New Password -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Password"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/agrandir_regular"
+            android:layout_marginTop="14dp"
+            android:layout_gravity="start"
+            android:layout_marginStart="18dp"
+            android:paddingBottom="4dp" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:cardCornerRadius="30dp"
+            app:cardElevation="10dp">
+
+            <EditText
+                android:id="@+id/edit_new_password"
+                android:layout_width="345dp"
+                android:layout_height="50dp"
+                android:background="@drawable/edit_field_box"
+                android:drawableStart="@drawable/lock_icon"
+                android:drawablePadding="8dp"
+                android:hint="New Password"
+                android:padding="8dp"
+                android:textColor="@color/black"
+                android:textColorHighlight="@color/cardview_dark_background"
+                android:fontFamily="@font/agrandir_regular"/>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Confirm New Password -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Confirm New Password"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/agrandir_regular"
+            android:layout_marginTop="14dp"
+            android:layout_gravity="start"
+            android:layout_marginStart="18dp"
+            android:paddingBottom="4dp" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:cardCornerRadius="30dp"
+            app:cardElevation="10dp">
+
+            <EditText
+                android:id="@+id/edit_confirm_new_password"
+                android:layout_width="345dp"
+                android:layout_height="50dp"
+                android:background="@drawable/edit_field_box"
+                android:drawableStart="@drawable/lock_icon"
+                android:drawablePadding="8dp"
+                android:hint="Confirm New Password"
+                android:padding="8dp"
+                android:textColor="@color/black"
+                android:textColorHighlight="@color/cardview_dark_background"
+                android:fontFamily="@font/agrandir_regular"/>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Save Changes Button -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="35dp"
+            android:layout_marginBottom="25dp"
+            app:cardCornerRadius="30dp"
+            app:cardElevation="10dp">
+
+            <Button
+                android:id="@+id/save_changes_button"
+                android:layout_width="345dp"
+                android:layout_height="50dp"
+                android:background="@drawable/edit_field_box"
+                android:text="Save Changes"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:fontFamily="@font/agrandir_regular"/>
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+</RelativeLayout>
