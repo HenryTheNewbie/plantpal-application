@@ -186,6 +186,7 @@
                 android:padding="8dp"
                 android:textColor="@color/black"
                 android:textColorHighlight="@color/cardview_dark_background"
+                android:inputType="textPassword"
                 android:fontFamily="@font/agrandir_regular"/>
         </com.google.android.material.card.MaterialCardView>
 
@@ -220,6 +221,7 @@
                 android:padding="8dp"
                 android:textColor="@color/black"
                 android:textColorHighlight="@color/cardview_dark_background"
+                android:inputType="textPassword"
                 android:fontFamily="@font/agrandir_regular"/>
         </com.google.android.material.card.MaterialCardView>
 
