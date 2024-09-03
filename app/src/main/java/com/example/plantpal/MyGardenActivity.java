@@ -24,6 +24,8 @@ public class MyGardenActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
 
+    private ImageView appSettingsButton;
+
     private ImageView profilePicture;
     private TextView username;
     private TextView userBio;
@@ -41,6 +43,8 @@ public class MyGardenActivity extends AppCompatActivity {
         editProfileButton = findViewById(R.id.edit_profile_button);
 
         bottomNavigationView = findViewById(R.id.navigation_bar);
+
+        appSettingsButton = findViewById(R.id.settings_icon);
 
         sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
         String userEmail = sharedPreferences.getString("email", "User");
@@ -82,6 +86,11 @@ public class MyGardenActivity extends AppCompatActivity {
         if (selectedItemId != -1) {
             bottomNavigationView.setSelectedItemId(selectedItemId);
         }
+
+        appSettingsButton.setOnClickListener(view -> {
+            Intent intent = new Intent(MyGardenActivity.this, AppSettingsActivity.class);
+            startActivity(intent);
+        });
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {@Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {

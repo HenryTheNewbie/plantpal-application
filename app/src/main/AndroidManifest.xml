@@ -2,12 +2,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
     <uses-permission android:name="android.permission.CAMERA" />
-
-    <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" tools:ignore="ScopedStorage" />
 
     <application
         android:allowBackup="true"
@@ -19,6 +22,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PlantPal"
         tools:targetApi="31">
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.plantpal.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -52,6 +64,20 @@
         <activity
             android:name=".EditProfileActivity">
         </activity>
+        <activity
+            android:name=".AppSettingsActivity">
+        </activity>
+        <activity
+            android:name=".FAQActivity">
+        </activity>
+        <activity
+            android:name=".PrivacyPolicyActivity">
+        </activity>
+        <activity
+            android:name=".TermsOfUseActivity">
+        </activity>
+        <activity
+            android:name=".AboutTheAppActivity">
+        </activity>
     </application>
-
 </manifest>
