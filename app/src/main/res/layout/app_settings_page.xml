@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AppSettingsActivity">
+
+    <!-- Page Header -->
+    <RelativeLayout
+        android:id="@+id/settings_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/page_header"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:elevation="20dp"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/settings_back_button"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_alignParentStart="true"
+            android:src="@drawable/back_arrow_icon"
+            android:clickable="true"/>
+
+        <TextView
+            android:id="@+id/app_settings_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="App Settings"
+            android:textSize="20sp"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:fontFamily="@font/agrandir_wide"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"/>
+    </RelativeLayout>
+
+    <!-- Notifications Slider -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/notifications_card"
+        android:layout_width="345dp"
+        android:layout_height="50dp"
+        android:layout_below="@id/settings_header"
+        android:layout_marginTop="16dp"
+        android:layout_centerHorizontal="true"
+        app:cardCornerRadius="30dp"
+        app:cardElevation="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:paddingStart="6dp"
+            android:paddingEnd="6dp"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:src="@drawable/bell_icon"
+                app:tint="@color/black"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="Notifications"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/agrandir_regular"
+                android:layout_weight="1"/>
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/notifications_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"/>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Content Area -->
+    <LinearLayout
+        android:id="@+id/settings_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/notifications_card"
+        android:orientation="vertical"
+        android:padding="8dp"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal">
+
+        <!-- FAQ Button -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="345dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="30dp"
+            app:cardElevation="10dp">
+
+            <Button
+                android:id="@+id/button_faq"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/edit_field_box"
+                android:text="FAQs"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/agrandir_regular"/>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Privacy Policy Button -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="345dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="30dp"
+            app:cardElevation="10dp">
+
+            <Button
+                android:id="@+id/button_privacy_policy"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/edit_field_box"
+                android:text="Privacy Policy"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/agrandir_regular"/>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Terms of Use Button -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="345dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="30dp"
+            app:cardElevation="10dp">
+
+            <Button
+                android:id="@+id/button_terms_of_use"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/edit_field_box"
+                android:text="Terms of Use"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/agrandir_regular"/>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- About the App Button -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="345dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="30dp"
+            app:cardElevation="10dp">
+
+            <Button
+                android:id="@+id/button_about_app"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/edit_field_box"
+                android:text="About the App"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/agrandir_regular"/>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Log Out Button -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="345dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="30dp"
+            app:cardCornerRadius="30dp"
+            app:cardElevation="10dp">
+
+            <Button
+                android:id="@+id/button_log_out"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/edit_field_box"
+                android:text="Log Out"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/holo_red"
+                android:fontFamily="@font/agrandir_regular"/>
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+</RelativeLayout>

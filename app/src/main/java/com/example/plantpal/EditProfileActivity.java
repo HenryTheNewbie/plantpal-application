@@ -1,14 +1,18 @@
 package com.example.plantpal;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.media.Image;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,14 +26,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.EmailAuthProvider;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -41,15 +42,23 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class EditProfileActivity extends AppCompatActivity {
 
-    private static final int REQUEST_IMAGE_CAPTURE = 1;
-    private static final int REQUEST_IMAGE_PICK = 2;
+    private static final int REQUEST_IMAGE_CAPTURE = 101;
+    private static final int REQUEST_IMAGE_PICK = 102;
+    private static final int REQUEST_CAMERA_PERMISSION = 1;
+    private static final int REQUEST_STORAGE_PERMISSION = 2;
+
     private boolean isDialogShowing = false;
 
     private ImageView backButton;
-
     private ImageView editProfilePicture;
     private ImageView tintOverlay;
     private TextView changeProfilePictureText;
@@ -60,10 +69,9 @@ public class EditProfileActivity extends AppCompatActivity {
     private EditText editConfirmNewPassword;
     private Button saveChangesButton;
 
-    private SharedPreferences sharedPreferences;
+    private String currentPhotoPath;
 
-    FirebaseStorage storage = FirebaseStorage.getInstance();
-    StorageReference storageRef = storage.getReference();
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -160,133 +168,230 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     private void showImagePickerOptions() {
-        if (isFinishing() || isDestroyed() || isDialogShowing) {
-            return;
-        }
-
-        isDialogShowing = true;
-
-        CharSequence[] options = {"Take Photo", "Choose From Gallery", "Cancel"};
-
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Choose Your Profile Picture");
-
-        builder.setItems(options, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
-                if (options[item].equals("Take Photo")) {
-                    openCamera();
-                } else if (options[item].equals("Choose from Gallery")) {
-                    openGallery();
-                } else if (options[item].equals("Cancel")) {
-                    dialog.dismiss();
-                }
+        builder.setTitle("Choose an option");
+        builder.setItems(new CharSequence[]{"Take Photo", "Choose from Gallery", "Cancel"}, (dialog, which) -> {
+            switch (which) {
+                case 0:
+                    Log.d("ImagePicker", "Take Photo selected");
+                    checkCameraPermission();
+                    break;
+                case 1:
+                    Log.d("ImagePicker", "Choose from Gallery selected");
+                    checkGalleryPermission();
+                    break;
             }
+            dialog.dismiss();
         });
-
-        builder.setOnDismissListener(dialog -> isDialogShowing = false);
         builder.show();
+        Log.d("ImagePicker", "ImagePicker dialog shown");
+    }
+
+    private void checkCameraPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
+        } else {
+            openCamera();
+        }
+    }
+
+    private void checkGalleryPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_MEDIA_IMAGES}, REQUEST_STORAGE_PERMISSION);
+            } else {
+                openGallery();
+            }
+        } else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_MEDIA_IMAGES}, REQUEST_STORAGE_PERMISSION);
+            } else {
+                openGallery();
+            }
+        } else {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_STORAGE_PERMISSION);
+            } else {
+                openGallery();
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_CAMERA_PERMISSION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                openCamera();
+            } else {
+                Log.e("Permissions", "Camera permission denied.");
+                Toast.makeText(this, "Camera permission is required to take pictures.", Toast.LENGTH_SHORT).show();
+            }
+        } else if (requestCode == REQUEST_STORAGE_PERMISSION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                openGallery();
+            } else {
+                Log.e("Permissions", "Storage permission denied.");
+                Toast.makeText(this, "Storage permission is required to access images.", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     private void openCamera() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        Log.d("ImagePicker", "openCamera called");
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+            if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                File photoFile = null;
+                try {
+                    photoFile = createImageFile();
+                } catch (IOException e) {
+                    Log.e("ImagePicker", "Error creating image file: " + e.getMessage());
+                    Toast.makeText(this, "Error creating image.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (photoFile != null) {
+                    Uri photoURI = FileProvider.getUriForFile(this, "com.example.plantpal.fileprovider", photoFile);
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                    Log.d("ImagePicker", "Camera intent started successfully");
+                } else {
+                    Log.e("ImagePicker", "Photo file is null");
+                    Toast.makeText(this, "Failed to create image file.", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Log.e("ImagePicker", "No camera app found");
+                Toast.makeText(this, "No camera app found.", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
         }
     }
 
+    private File createImageFile() throws IOException {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+        String imageFileName = "PNG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(imageFileName, ".png", storageDir);
+        currentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+
     private void openGallery() {
+        Log.d("ImagePicker", "openGallery called");
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_STORAGE_PERMISSION);
+        } else {
+            openGalleryIntent();
+        }
+    }
+
+    private void openGalleryIntent() {
         Intent pickPhotoIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        Log.d("ImagePicker", "Starting gallery activity");
         startActivityForResult(pickPhotoIntent, REQUEST_IMAGE_PICK);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Log.d("ImagePicker", "onActivityResult called with requestCode: " + requestCode + ", resultCode: " + resultCode);
 
         if (resultCode == RESULT_OK) {
-            if (requestCode == REQUEST_IMAGE_PICK && data != null) {
+            if (requestCode == REQUEST_IMAGE_CAPTURE) {
+                Log.d("ImagePicker", "Image captured successfully");
+
+                Uri photoURI = Uri.parse(currentPhotoPath);
+                if (photoURI != null) {
+                    editProfilePicture.setImageURI(photoURI);
+                    uploadImageToFirebase(photoURI);
+                } else {
+                    Log.e("ImagePicker", "Photo URI is null");
+                    Toast.makeText(this, "Failed to retrieve captured image.", Toast.LENGTH_SHORT).show();
+                }
+            } else if (requestCode == REQUEST_IMAGE_PICK && data != null) {
                 Uri selectedImageUri = data.getData();
-                editProfilePicture.setImageURI(selectedImageUri);
-
-                StorageReference imageRef = storageRef.child("profile_pictures/" + selectedImageUri.getLastPathSegment());
-
-                UploadTask uploadTask = imageRef.putFile(selectedImageUri);
-                uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                String imageUrl = uri.toString();
-                                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                                DatabaseReference usersRef = database.getReference("users");
-
-                                String userEmail = sharedPreferences.getString("email", "User");
-
-                                usersRef.orderByChild("email").equalTo(userEmail).addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                        for (DataSnapshot userSnapshot : snapshot.getChildren()) {
-                                            String userId = userSnapshot.getKey();
-                                            usersRef.child(userId).child("profilePictureUrl").setValue(imageUrl);
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError error) {
-                                        Toast.makeText(EditProfileActivity.this, "Failed to update profile picture.", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                            }
-                        });
-                    }
-                });
-
-            } else if (requestCode == REQUEST_IMAGE_CAPTURE && data != null) {
-                Bundle extras = data.getExtras();
-                Bitmap imageBitmap = (Bitmap) extras.get("data");
-                editProfilePicture.setImageBitmap(imageBitmap);
-
-                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-                byte[] imageData = byteArrayOutputStream.toByteArray();
-
-                StorageReference imageRef = storageRef.child("profile_pictures/" + System.currentTimeMillis() + ".png");
-
-                UploadTask uploadTask = imageRef.putBytes(imageData);
-                uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                String imageUrl = uri.toString();
-                                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                                DatabaseReference usersRef = database.getReference("users");
-
-                                String userEmail = sharedPreferences.getString("email", "User");
-
-                                usersRef.orderByChild("email").equalTo(userEmail).addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                        for (DataSnapshot userSnapshot : snapshot.getChildren()) {
-                                            String userId = userSnapshot.getKey();
-                                            usersRef.child(userId).child("profilePictureUrl").setValue(imageUrl);
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError error) {
-                                        Toast.makeText(EditProfileActivity.this, "Failed to update profile picture.", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                            }
-                        });
-                    }
-                });
+                if (selectedImageUri != null) {
+                    Log.d("ImagePicker", "Image selected successfully");
+                    editProfilePicture.setImageURI(selectedImageUri);
+                    uploadImageToFirebase(selectedImageUri);
+                } else {
+                    Log.e("ImagePicker", "Selected image URI is null");
+                    Toast.makeText(this, "Failed to retrieve selected image.", Toast.LENGTH_SHORT).show();
+                }
             }
+        } else {
+            Log.d("ImagePicker", "Result not OK, requestCode: " + requestCode + ", resultCode: " + resultCode);
         }
+    }
+
+    private void uploadImageToFirebase(Uri imageUri) {
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReferenceFromUrl("gs://plantpal-application.appspot.com");
+
+        if (imageUri != null) {
+            StorageReference imageRef = storageRef.child("profile_pictures/" + imageUri.getLastPathSegment());
+            UploadTask uploadTask = imageRef.putFile(imageUri);
+
+            uploadTask.addOnSuccessListener(taskSnapshot -> {
+                Log.d("Firebase", "Image uploaded successfully");
+                imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                    String imageUrl = uri.toString();
+                    Log.d("Firebase", "Download URL: " + imageUrl);
+                    updateProfilePictureUrl(imageUrl);
+                }).addOnFailureListener(e -> {
+                    Log.e("Firebase", "Failed to retrieve download URL: " + e.getMessage());
+                    Toast.makeText(this, "Failed to retrieve image URL.", Toast.LENGTH_SHORT).show();
+                });
+            }).addOnFailureListener(e -> {
+                Log.e("Firebase", "Failed to upload image: " + e.getMessage());
+                Toast.makeText(this, "Image upload failed.", Toast.LENGTH_SHORT).show();
+            });
+        } else {
+            Log.e("ImagePicker", "Image URI is null, cannot upload.");
+            Toast.makeText(this, "Image URI is null.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void updateProfilePictureUrl(String imageUrl) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference usersRef = database.getReference("users");
+        String userEmail = sharedPreferences.getString("email", "User");
+
+        usersRef.orderByChild("email").equalTo(userEmail).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    for (DataSnapshot userSnapshot : snapshot.getChildren()) {
+                        String userId = userSnapshot.getKey();
+                        Log.d("Firebase", "Updating profile picture URL for userId: " + userId);
+
+                        usersRef.child(userId).child("profilePictureUrl").setValue(imageUrl)
+                                .addOnSuccessListener(aVoid -> {
+                                    Log.d("Firebase", "Profile picture URL updated successfully");
+                                    Toast.makeText(EditProfileActivity.this, "Profile picture updated.", Toast.LENGTH_SHORT).show();
+                                })
+                                .addOnFailureListener(e -> {
+                                    Log.e("Firebase", "Failed to update profile picture URL: " + e.getMessage());
+                                    Toast.makeText(EditProfileActivity.this, "Failed to update profile picture.", Toast.LENGTH_SHORT).show();
+                                });
+                    }
+                } else {
+                    Log.e("Firebase", "User not found");
+                    Toast.makeText(EditProfileActivity.this, "User not found.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("Firebase", "Database error: " + error.getMessage());
+                Toast.makeText(EditProfileActivity.this, "Failed to update profile picture.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void updateProfileInfo(String newUsername, String newBio) {
