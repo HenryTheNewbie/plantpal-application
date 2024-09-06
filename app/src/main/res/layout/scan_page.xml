@@ -7,18 +7,89 @@
     android:layout_height="match_parent"
     tools:context=".ScanActivity">
 
-    <Button
-        android:id="@+id/temporary_back_button"
+    <!-- Camera button -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/camera_button"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_centerInParent="true"
+        app:cardCornerRadius="60dp"
+        app:cardElevation="6dp"
+        android:backgroundTint="@android:color/white">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/camera_icon"
+            android:layout_gravity="center"
+            app:tint="@android:color/black" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Camera text label -->
+    <TextView
+        android:id="@+id/camera_text_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/edit_field_box"
-        android:text="Back"
-        android:textSize="20sp"
+        android:layout_below="@id/camera_button"
+        android:layout_centerHorizontal="true"
+        android:text="Camera"
+        android:textColor="@android:color/black"
         android:textStyle="bold"
-        android:textColor="@color/black"
-        android:fontFamily="@font/agrandir_wide"
-        android:layout_centerInParent="true"
-        android:layout_marginBottom="20dp"/>
+        android:textSize="16sp"
+        android:textAlignment="center"
+        android:paddingTop="10dp"
+        android:fontFamily="@font/agrandir_regular"/>
+
+    <!-- Gallery button (slightly smaller and next to camera button) -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/gallery_button"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_toEndOf="@id/camera_button"
+        android:layout_marginStart="16dp"
+        android:layout_alignBottom="@id/camera_button"
+        app:cardCornerRadius="40dp"
+        app:cardElevation="6dp"
+        android:backgroundTint="@android:color/white">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/gallery_icon"
+            android:layout_gravity="center"
+            app:tint="@android:color/black" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Gallery text label -->
+    <TextView
+        android:id="@+id/gallery_text_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/gallery_button"
+        android:layout_alignStart="@id/gallery_button"
+        android:layout_alignEnd="@id/gallery_button"
+        android:text="Gallery"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:textAlignment="center"
+        android:paddingTop="10dp"
+        android:fontFamily="@font/agrandir_regular"/>
+
+    <!-- Instruction TextView -->
+    <TextView
+        android:id="@+id/instruction_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/navigation_bar"
+        android:layout_centerHorizontal="true"
+        android:text="Note: Please ensure the picture contains only one plant and no more."
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+        android:textAlignment="center"
+        android:padding="20dp"
+        android:fontFamily="@font/agrandir_regular"
+        android:lineSpacingExtra="4sp" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navigation_bar"

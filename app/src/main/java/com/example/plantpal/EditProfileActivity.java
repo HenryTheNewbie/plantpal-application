@@ -22,6 +22,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -51,10 +53,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class EditProfileActivity extends AppCompatActivity {
 
-    private static final int REQUEST_IMAGE_CAPTURE = 101;
-    private static final int REQUEST_IMAGE_PICK = 102;
-    private static final int REQUEST_CAMERA_PERMISSION = 1;
-    private static final int REQUEST_STORAGE_PERMISSION = 2;
+    private static final int REQUEST_CAMERA_PERMISSION = 1001;
+    private static final int REQUEST_STORAGE_PERMISSION = 1002;
+    private static final int REQUEST_IMAGE_CAPTURE = 1003;
+    private static final int REQUEST_IMAGE_PICK = 1004;
 
     private boolean isDialogShowing = false;
 
@@ -189,28 +191,22 @@ public class EditProfileActivity extends AppCompatActivity {
 
     private void checkCameraPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
+            requestCameraPermissionLauncher.launch(Manifest.permission.CAMERA);
         } else {
             openCamera();
         }
     }
 
     private void checkGalleryPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_MEDIA_IMAGES}, REQUEST_STORAGE_PERMISSION);
-            } else {
-                openGallery();
-            }
-        } else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_MEDIA_IMAGES}, REQUEST_STORAGE_PERMISSION);
+                requestStoragePermissionLauncher.launch(Manifest.permission.READ_MEDIA_IMAGES);
             } else {
                 openGallery();
             }
         } else {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_STORAGE_PERMISSION);
+                requestStoragePermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE);
             } else {
                 openGallery();
             }
@@ -227,19 +223,30 @@ public class EditProfileActivity extends AppCompatActivity {
                 Log.e("Permissions", "Camera permission denied.");
                 Toast.makeText(this, "Camera permission is required to take pictures.", Toast.LENGTH_SHORT).show();
             }
-        } else if (requestCode == REQUEST_STORAGE_PERMISSION) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                openGallery();
-            } else {
-                Log.e("Permissions", "Storage permission denied.");
-                Toast.makeText(this, "Storage permission is required to access images.", Toast.LENGTH_SHORT).show();
-            }
         }
     }
 
-    private void openCamera() {
-        Log.d("ImagePicker", "openCamera called");
+    private final ActivityResultLauncher<String> requestCameraPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                if (isGranted) {
+                    openCamera();
+                } else {
+                    Log.e("Permissions", "Camera permission denied.");
+                    Toast.makeText(this, "Camera permission is required to take pictures.", Toast.LENGTH_SHORT).show();
+                }
+            });
 
+    private final ActivityResultLauncher<String> requestStoragePermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                if (isGranted) {
+                    openGallery();
+                } else {
+                    Log.e("Permissions", "Storage permission denied.");
+                    Toast.makeText(this, "Storage permission is required to access images.", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+    private void openCamera() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
             Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
@@ -283,11 +290,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private void openGallery() {
         Log.d("ImagePicker", "openGallery called");
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_STORAGE_PERMISSION);
-        } else {
-            openGalleryIntent();
-        }
+        openGalleryIntent();
     }
 
     private void openGalleryIntent() {
@@ -305,7 +308,8 @@ public class EditProfileActivity extends AppCompatActivity {
             if (requestCode == REQUEST_IMAGE_CAPTURE) {
                 Log.d("ImagePicker", "Image captured successfully");
 
-                Uri photoURI = Uri.parse(currentPhotoPath);
+                Uri photoURI = Uri.fromFile(new File(currentPhotoPath));
+
                 if (photoURI != null) {
                     editProfilePicture.setImageURI(photoURI);
                     uploadImageToFirebase(photoURI);
@@ -331,10 +335,12 @@ public class EditProfileActivity extends AppCompatActivity {
 
     private void uploadImageToFirebase(Uri imageUri) {
         FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReferenceFromUrl("gs://plantpal-application.appspot.com");
+        StorageReference storageRef = storage.getReference();
+
+        Log.d("uri", imageUri.toString());
 
         if (imageUri != null) {
-            StorageReference imageRef = storageRef.child("profile_pictures/" + imageUri.getLastPathSegment());
+            StorageReference imageRef = storageRef.child("profile_pictures/" + System.currentTimeMillis() + ".png");
             UploadTask uploadTask = imageRef.putFile(imageUri);
 
             uploadTask.addOnSuccessListener(taskSnapshot -> {
@@ -360,6 +366,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private void updateProfilePictureUrl(String imageUrl) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference usersRef = database.getReference("users");
+
         String userEmail = sharedPreferences.getString("email", "User");
 
         usersRef.orderByChild("email").equalTo(userEmail).addListenerForSingleValueEvent(new ValueEventListener() {
