@@ -79,5 +79,11 @@
         <activity
             android:name=".AboutTheAppActivity">
         </activity>
+        <activity
+            android:name=".CreateForumActivity">
+        </activity>
+        <activity
+            android:name=".ForumDetailActivity">
+        </activity>
     </application>
 </manifest>
