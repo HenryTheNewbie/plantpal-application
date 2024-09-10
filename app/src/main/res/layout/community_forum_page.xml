@@ -7,18 +7,71 @@
     android:layout_height="match_parent"
     tools:context=".CommunityForumActivity">
 
-    <Button
-        android:id="@+id/temporary_back_button"
-        android:layout_width="wrap_content"
+    <!-- Page Header -->
+    <RelativeLayout
+        android:id="@+id/community_hub_header"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/edit_field_box"
-        android:text="Back"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        android:fontFamily="@font/agrandir_wide"
-        android:layout_centerInParent="true"
-        android:layout_marginBottom="20dp"/>
+        android:background="@drawable/page_header"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:elevation="20dp"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/community_hub_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Community Hub"
+            android:textSize="20sp"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:fontFamily="@font/agrandir_wide"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"/>
+
+        <ImageView
+            android:id="@+id/create_forum_button"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/create_forum_icon"
+            android:clickable="true"/>
+    </RelativeLayout>
+
+    <!-- Search Bar -->
+    <RelativeLayout
+        android:id="@+id/search_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/community_hub_header"
+        android:padding="16dp">
+
+        <EditText
+            android:id="@+id/search_bar"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:hint="Search..."
+            android:background="@drawable/edit_field_box"
+            android:padding="8dp"
+            android:drawableLeft="@drawable/search_icon"
+            android:drawablePadding="8dp"
+            android:textSize="16sp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"
+            android:fontFamily="@font/agrandir_regular"/>
+    </RelativeLayout>
+
+    <!-- Scrollable Forum List -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/forums_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="16dp"
+        android:layout_below="@id/search_container"
+        android:layout_above="@id/navigation_bar"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navigation_bar"

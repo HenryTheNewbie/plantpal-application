@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CreateForumActivity">
+
+    <!-- Page Header -->
+    <RelativeLayout
+        android:id="@+id/create_forum_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/page_header"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:elevation="20dp"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/create_forum_back_button"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_alignParentStart="true"
+            android:src="@drawable/back_arrow_icon"
+            android:clickable="true"/>
+
+        <TextView
+            android:id="@+id/create_forum_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Create Forum"
+            android:textSize="20sp"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:fontFamily="@font/agrandir_wide"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/create_forum_form"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:layout_below="@id/create_forum_header"
+        android:padding="16dp">
+
+        <!-- Forum Title -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Title"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/agrandir_regular"
+            android:layout_marginTop="4dp"
+            android:layout_gravity="start"
+            android:layout_marginStart="18dp"
+            android:paddingBottom="4dp" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:cardCornerRadius="30dp"
+            app:cardElevation="10dp">
+
+            <EditText
+                android:id="@+id/forum_title_edit_text"
+                android:layout_width="345dp"
+                android:layout_height="50dp"
+                android:background="@drawable/edit_field_box"
+                android:hint="Enter Forum Title..."
+                android:padding="8dp"
+                android:paddingStart="16dp"
+                android:textColor="@color/black"
+                android:textColorHighlight="@color/cardview_dark_background"
+                android:fontFamily="@font/agrandir_regular"/>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Forum Context -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Context"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/agrandir_regular"
+            android:layout_marginTop="14dp"
+            android:layout_gravity="start"
+            android:layout_marginStart="18dp"
+            android:paddingBottom="4dp" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:cardCornerRadius="30dp"
+            app:cardElevation="10dp">
+
+            <EditText
+                android:id="@+id/forum_context_edit_text"
+                android:layout_width="345dp"
+                android:layout_height="200dp"
+                android:background="@drawable/edit_field_box"
+                android:hint="Enter Forum Context..."
+                android:padding="8dp"
+                android:paddingStart="16dp"
+                android:textColor="@color/black"
+                android:gravity="top"
+                android:textColorHighlight="@color/cardview_dark_background"
+                android:fontFamily="@font/agrandir_regular"/>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Create Forum Button -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="25dp"
+            app:cardCornerRadius="30dp"
+            app:cardElevation="10dp">
+
+            <Button
+                android:id="@+id/create_forum_button"
+                android:layout_width="345dp"
+                android:layout_height="50dp"
+                android:background="@drawable/edit_field_box"
+                android:text="Create Forum"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:fontFamily="@font/agrandir_regular"/>
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+</RelativeLayout>
