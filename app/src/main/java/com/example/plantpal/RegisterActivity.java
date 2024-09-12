@@ -1,6 +1,7 @@
 package com.example.plantpal;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -23,6 +24,7 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText passwordEditText;
     private EditText confirmPasswordEditText;
     private Button registerButton;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +36,7 @@ public class RegisterActivity extends AppCompatActivity {
         passwordEditText = findViewById(R.id.password);
         confirmPasswordEditText = findViewById(R.id.confirm_password);
         registerButton = findViewById(R.id.register_button);
+        sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,6 +76,12 @@ public class RegisterActivity extends AppCompatActivity {
                                             User user = new User(username, email, password, "", "");
                                             usersRef.child(username).setValue(user);
                                             Toast.makeText(RegisterActivity.this, "User registered successfully.", Toast.LENGTH_SHORT).show();
+
+                                            sharedPreferences.edit()
+                                                    .putBoolean("rememberMe", true)
+                                                    .putString("username", username)
+                                                    .putString("email", email)
+                                                    .apply();
 
                                             Intent intent = new Intent(RegisterActivity.this, LandingPageActivity.class);
                                             startActivity(intent);
