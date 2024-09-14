@@ -7,18 +7,85 @@
     android:layout_height="match_parent"
     tools:context=".PlantArchiveActivity">
 
-    <Button
-        android:id="@+id/temporary_back_button"
+    <!-- Page Header -->
+    <RelativeLayout
+        android:id="@+id/plant_archive_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/page_header"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:elevation="20dp"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/plant_archive_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Plant Archive"
+            android:textSize="20sp"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:fontFamily="@font/agrandir_wide"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"/>
+
+        <ImageView
+            android:id="@+id/icon_placeholder"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/app_settings_icon"
+            android:visibility="invisible"/>
+    </RelativeLayout>
+
+    <!-- Search Bar -->
+    <RelativeLayout
+        android:id="@+id/search_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/plant_archive_header"
+        android:padding="16dp">
+
+        <EditText
+            android:id="@+id/search_bar"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:hint="Search..."
+            android:background="@drawable/edit_field_box"
+            android:padding="8dp"
+            android:drawableLeft="@drawable/search_icon"
+            android:drawablePadding="8dp"
+            android:textSize="16sp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"
+            android:fontFamily="@font/agrandir_regular"/>
+    </RelativeLayout>
+
+    <!-- Placeholder Text For Search Prompt -->
+    <TextView
+        android:id="@+id/search_suggestion_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/edit_field_box"
-        android:text="Back"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        android:fontFamily="@font/agrandir_wide"
-        android:layout_centerInParent="true"
-        android:layout_marginBottom="20dp"/>
+        android:layout_below="@id/search_container"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="12dp"
+        android:text="Start searching for plants to explore the archive!"
+        android:textSize="16sp"
+        android:textColor="#888888"
+        android:fontFamily="@font/agrandir_regular"/>
+
+    <!-- Scrollable Plant List -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/plant_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="16dp"
+        android:layout_below="@id/search_container"
+        android:layout_above="@id/navigation_bar"
+        android:visibility="gone"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navigation_bar"

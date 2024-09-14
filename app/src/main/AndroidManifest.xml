@@ -85,5 +85,8 @@
         <activity
             android:name=".ForumDetailActivity">
         </activity>
+        <activity
+            android:name=".PlantDetailActivity">
+        </activity>
     </application>
 </manifest>
