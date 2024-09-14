@@ -63,8 +63,7 @@ public class PlantDetailActivity extends AppCompatActivity {
         plantExtraCareInfo = findViewById(R.id.plant_extra_information);
 
         backButton.setOnClickListener(v -> {
-            Intent intent = new Intent(this, PlantArchiveActivity.class);
-            startActivity(intent);
+            finish();
         });
 
         sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
