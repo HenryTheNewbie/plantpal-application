@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="16dp"
+    app:cardBackgroundColor="#FFFFFF">
+
+    <!-- Main Container for Plant Item -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <!-- Plant Image -->
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/plant_image"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/ic_plant_placeholder"
+            app:shapeAppearanceOverlay="@style/CustomImageCorner"
+            android:scaleType="centerCrop"/>
+
+        <!-- Plant Common Name -->
+        <TextView
+            android:id="@+id/plant_common_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/plant_image"
+            android:layout_marginTop="10dp"
+            android:text="Common Name"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:fontFamily="@font/agrandir_regular"/>
+
+        <!-- Plant Scientific Name -->
+        <TextView
+            android:id="@+id/plant_scientific_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/plant_common_name"
+            android:text="Scientific Name"
+            android:textSize="12sp"
+            android:textColor="#666666"
+            android:fontFamily="@font/agrandir_regular"
+            android:layout_marginTop="6dp"/>
+    </RelativeLayout>
+</com.google.android.material.card.MaterialCardView>
