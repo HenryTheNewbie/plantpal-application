@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,9 +32,11 @@ public class PlantDetailActivity extends AppCompatActivity {
     private ImageView bookmarkButton;
 
     private ImageView plantImage;
-    private TextView plantCommonName, plantScientificName, plantFamily, plantDescription;
+    private TextView plantCommonName, plantScientificName, plantFamily, plantDescription, plantCategory;
     private TextView plantSunlight, plantWater, plantSoil, plantFertilizer, plantTemperature, plantHumidity;
     private TextView plantExtraCareInfo;
+    private RelativeLayout plantHerbalPropertiesContent;
+    private TextView plantHerbalProperties;
 
     private FirebaseDatabase database;
     private DatabaseReference myGardenRef;
@@ -61,6 +65,10 @@ public class PlantDetailActivity extends AppCompatActivity {
         plantTemperature = findViewById(R.id.plant_temperature);
         plantHumidity = findViewById(R.id.plant_humidity);
         plantExtraCareInfo = findViewById(R.id.plant_extra_information);
+        plantCategory = findViewById(R.id.plant_category_text);
+        plantHerbalProperties = findViewById(R.id.plant_herbal_properties);
+
+        plantHerbalPropertiesContent = findViewById(R.id.plant_herbal_properties_content);
 
         backButton.setOnClickListener(v -> {
             finish();
@@ -85,6 +93,8 @@ public class PlantDetailActivity extends AppCompatActivity {
         String temperature = intent.getStringExtra("temperature");
         String humidity = intent.getStringExtra("humidity");
         String extraCareInfo = intent.getStringExtra("extraCareInfo");
+        String category = intent.getStringExtra("category");
+        String herbalProperties = intent.getStringExtra("herbalProperties");
 
         plantCommonName.setText(commonName);
         plantScientificName.setText(scientificName);
@@ -97,6 +107,14 @@ public class PlantDetailActivity extends AppCompatActivity {
         plantTemperature.setText(temperature);
         plantHumidity.setText(humidity);
         plantExtraCareInfo.setText(extraCareInfo);
+        plantCategory.setText(category);
+
+        if (herbalProperties == null || herbalProperties.trim().isEmpty()) {
+            plantHerbalPropertiesContent.setVisibility(View.GONE);
+        } else {
+            plantHerbalPropertiesContent.setVisibility(View.VISIBLE);
+            plantHerbalProperties.setText(herbalProperties);
+        }
 
         loadImageFromURL(imageURL);
 

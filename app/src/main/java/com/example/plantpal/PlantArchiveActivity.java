@@ -165,8 +165,10 @@ public class PlantArchiveActivity extends AppCompatActivity {
                     String temperature = plantSnapshot.child("temperature").getValue().toString();
                     String humidity = plantSnapshot.child("humidity").getValue().toString();
                     String extraCareInfo = plantSnapshot.child("extraCareInfo").getValue().toString();
+                    String category = plantSnapshot.child("category").getValue().toString();
+                    String herbalProperties = plantSnapshot.child("herbalProperties").getValue().toString();
 
-                    Plant plant = new Plant(commonName, scientificName, family, description, imageURL, sunlight, water, soil, fertilizer, temperature, humidity, extraCareInfo);
+                    Plant plant = new Plant(commonName, scientificName, family, description, imageURL, sunlight, water, soil, fertilizer, temperature, humidity, extraCareInfo, category, herbalProperties);
                     plantList.add(plant);
                 }
 

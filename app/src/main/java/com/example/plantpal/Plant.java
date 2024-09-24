@@ -13,13 +13,15 @@ public class Plant {
     private String temperature;
     private String humidity;
     private String extraCareInfo;
+    private String category;
+    private String herbalProperties;
 
     public Plant() {
     }
 
     public Plant(String commonName, String scientificName, String family, String description, String imageURL,
                  String sunlight, String water, String soil, String fertilizer, String temperature, String humidity,
-                 String extraCareInfo) {
+                 String extraCareInfo, String category, String herbalProperties) {
         this.commonName = commonName;
         this.scientificName = scientificName;
         this.family = family;
@@ -32,6 +34,8 @@ public class Plant {
         this.temperature = temperature;
         this.humidity = humidity;
         this.extraCareInfo = extraCareInfo;
+        this.category = category;
+        this.herbalProperties = herbalProperties;
     }
 
     public String getCommonName() {
@@ -128,5 +132,21 @@ public class Plant {
 
     public void setExtraCareInfo(String extraCareInfo) {
         this.extraCareInfo = extraCareInfo;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getHerbalProperties() {
+        return herbalProperties;
+    }
+
+    public void setHerbalProperties(String herbalProperties) {
+        this.herbalProperties = herbalProperties;
     }
 }
