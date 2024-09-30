@@ -53,7 +53,7 @@ public class ForumDetailActivity extends AppCompatActivity {
 
     private ImageView backButton, forumAuthorAvatar;
 
-    private TextView titleTextView, contextTextView, authorTextView, createdAtTextView;
+    private TextView titleTextView, contextTextView, authorTextView, bioTextView, createdAtTextView;
 
     private LinearLayout forumImagesSection;
     private ImageView forumImage1, forumImage2, forumImage3;
@@ -89,6 +89,7 @@ public class ForumDetailActivity extends AppCompatActivity {
         titleTextView = findViewById(R.id.forum_title_placeholder);
         contextTextView = findViewById(R.id.forum_context);
         authorTextView = findViewById(R.id.forum_author_username);
+        bioTextView = findViewById(R.id.forum_author_bio);
         createdAtTextView = findViewById(R.id.forum_date_placeholder);
 
         forumImagesSection = findViewById(R.id.forum_images_section);
@@ -166,6 +167,7 @@ public class ForumDetailActivity extends AppCompatActivity {
             authorTextView.setText(author);
             createdAtTextView.setText("Created on: " + createdAt);
 
+            loadAuthorBio(author);
             loadAuthorAvatar(author);
             loadReplies();
         }
@@ -192,6 +194,31 @@ public class ForumDetailActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void loadAuthorBio(String author) {
+        DatabaseReference bioRef = FirebaseDatabase.getInstance().getReference().child("users").child(author).child("bio");
+        bioRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    String bio = dataSnapshot.getValue(String.class);
+                    if (bio != null) {
+                        bioTextView.setText(bio);
+                        bioTextView.setVisibility(View.VISIBLE);
+                    }
+                } else {
+                    bioTextView.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("ForumDetailActivity", "Failed to load author bio: " + databaseError.getMessage());
+                bioTextView.setVisibility(View.GONE);
+            }
+        });
+    }
+
 
     private void loadAuthorAvatar(String authorUsername) {
         databaseReference.child("users").child(authorUsername).child("profilePictureUrl").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -390,6 +417,30 @@ public class ForumDetailActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Log.e("ForumDetailActivity", "Failed to load author avatar: " + databaseError.getMessage());
+            }
+        });
+    }
+
+    public void loadRepliesAuthorBio(String replyAuthorUsername, TextView replyAuthorBio) {
+        DatabaseReference bioRef = FirebaseDatabase.getInstance().getReference().child("users").child(replyAuthorUsername).child("bio");
+        bioRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    String bio = dataSnapshot.getValue(String.class);
+                    if (bio != null) {
+                        replyAuthorBio.setText(bio);
+                        replyAuthorBio.setVisibility(View.VISIBLE);
+                    }
+                } else {
+                    replyAuthorBio.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("ForumDetailActivity", "Failed to load author bio: " + databaseError.getMessage());
+                replyAuthorBio.setVisibility(View.GONE);
             }
         });
     }
