@@ -27,7 +27,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CommunityForumActivity extends AppCompatActivity {
 
@@ -161,7 +163,16 @@ public class CommunityForumActivity extends AppCompatActivity {
 
                     int repliesCount = (repliesCountLong != null) ? repliesCountLong.intValue() : 0;
 
-                    Forum forum = new Forum(forumId, title, context, author, createdAt, null, repliesCount);
+                    List<String> forumImageUrls = new ArrayList<>();
+                    for (DataSnapshot imageUrlSnapshot : forumSnapshot.child("forumImageUrls").getChildren()) {
+                        String imageUrl = imageUrlSnapshot.getValue(String.class);
+                        if (imageUrl != null) {
+                            forumImageUrls.add(imageUrl);
+                        }
+                    }
+
+                    Forum forum = new Forum(forumId, title, context, author, createdAt, null, repliesCount, forumImageUrls);
+
                     forumList.add(forum);
 
                     Log.d("ForumItem", "Title: " + title + ", Author: " + author);

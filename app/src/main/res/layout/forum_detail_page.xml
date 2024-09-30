@@ -137,6 +137,46 @@
                             android:textColor="#000000"
                             android:fontFamily="@font/agrandir_regular"/>
 
+                        <!-- Image Section -->
+                        <LinearLayout
+                            android:id="@+id/forum_images_section"
+                            android:layout_width="150dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="12dp"
+                            android:visibility="gone">
+
+                            <ImageView
+                                android:id="@+id/forum_image_1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:scaleType="centerCrop"
+                                android:adjustViewBounds="true"
+                                android:src="@drawable/forum_image_placeholder"
+                                android:visibility="gone"/>
+
+                            <ImageView
+                                android:id="@+id/forum_image_2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:scaleType="centerCrop"
+                                android:adjustViewBounds="true"
+                                android:src="@drawable/forum_image_placeholder"
+                                android:layout_marginTop="16dp"
+                                android:visibility="gone"/>
+
+                            <ImageView
+                                android:id="@+id/forum_image_3"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:scaleType="centerCrop"
+                                android:adjustViewBounds="true"
+                                android:src="@drawable/forum_image_placeholder"
+                                android:layout_marginTop="16dp"
+                                android:visibility="gone"/>
+                        </LinearLayout>
+
                         <TextView
                             android:id="@+id/forum_context"
                             android:layout_width="wrap_content"
@@ -163,6 +203,26 @@
         </LinearLayout>
     </ScrollView>
 
+    <!-- Image Preview Section -->
+    <RelativeLayout
+        android:id="@+id/reply_preview_image_section"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/forum_reply_input_section"
+        android:background="#FFFFFF"
+        android:padding="16dp"
+        android:elevation="6dp"
+        android:visibility="gone">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/reply_preview_image_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal"/>
+
+    </RelativeLayout>
+
     <!-- Reply Input Section -->
     <RelativeLayout
         android:id="@+id/forum_reply_input_section"
@@ -173,11 +233,23 @@
         android:padding="16dp"
         android:elevation="10dp">
 
+        <ImageView
+            android:id="@+id/reply_image_button"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignBottom="@id/reply_input_field"
+            android:src="@drawable/upload_image_icon"
+            android:clickable="true"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="6dp">
+        </ImageView>
+
         <EditText
             android:id="@+id/reply_input_field"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
+            android:layout_toEndOf="@id/reply_image_button"
             android:layout_toStartOf="@id/reply_submit_button"
             android:layout_weight="1"
             android:hint="Write a reply..."
