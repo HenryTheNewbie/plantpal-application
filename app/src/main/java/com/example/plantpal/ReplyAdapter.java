@@ -41,6 +41,7 @@ public class ReplyAdapter extends RecyclerView.Adapter<ReplyAdapter.ReplyViewHol
         holder.replyContent.setText(reply.getContent());
 
         ((ForumDetailActivity) context).loadRepliesAuthorAvatar(reply.getAuthor(), holder.replyAuthorAvatar);
+        ((ForumDetailActivity) context).loadRepliesAuthorBio(reply.getAuthor(), holder.replyAuthorBio);
 
         List<String> replyImageUrls = reply.getReplyImageUrls();
 
@@ -81,6 +82,7 @@ public class ReplyAdapter extends RecyclerView.Adapter<ReplyAdapter.ReplyViewHol
         TextView replyDate;
         TextView replyContent;
         ImageView replyAuthorAvatar;
+        TextView replyAuthorBio;
         LinearLayout replyImagesSection;
         ImageView replyImage1, replyImage2, replyImage3;
 
@@ -90,6 +92,7 @@ public class ReplyAdapter extends RecyclerView.Adapter<ReplyAdapter.ReplyViewHol
             replyDate = itemView.findViewById(R.id.reply_date);
             replyContent = itemView.findViewById(R.id.reply_content);
             replyAuthorAvatar = itemView.findViewById(R.id.reply_author_avatar);
+            replyAuthorBio = itemView.findViewById(R.id.reply_author_bio);
 
             replyImagesSection = itemView.findViewById(R.id.reply_images_section);
             replyImage1 = itemView.findViewById(R.id.reply_image_1);
