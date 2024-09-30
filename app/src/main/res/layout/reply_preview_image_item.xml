@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/preview_image_container"
+    android:layout_width="100dp"
+    android:layout_height="100dp"
+    android:layout_marginEnd="16dp"
+    android:background="@drawable/reply_image_placeholder">
+
+    <ImageView
+        android:id="@+id/preview_image"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:scaleType="centerCrop"
+        android:adjustViewBounds="true"
+        android:src="@drawable/reply_image_placeholder" />
+
+    <ImageView
+        android:id="@+id/preview_image_delete_button"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="4dp"
+        android:src="@drawable/delete_image_icon"
+        android:clickable="true"
+        android:background="@android:color/transparent"/>
+</RelativeLayout>

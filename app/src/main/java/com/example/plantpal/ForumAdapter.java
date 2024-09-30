@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.ForumViewHolder> {
@@ -45,6 +46,9 @@ public class ForumAdapter extends RecyclerView.Adapter<ForumAdapter.ForumViewHol
             intent.putExtra("createdAt", forum.getCreatedAt());
             intent.putExtra("author", forum.getAuthor());
             intent.putExtra("repliesCount", forum.getRepliesCount());
+
+            intent.putStringArrayListExtra("forumImageUrls", new ArrayList<>(forum.getForumImageUrls()));
+
             context.startActivity(intent);
         });
     }
