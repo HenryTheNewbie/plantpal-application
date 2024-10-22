@@ -149,4 +149,11 @@ public class Plant {
     public void setHerbalProperties(String herbalProperties) {
         this.herbalProperties = herbalProperties;
     }
+
+    @Override
+    public String toString() {
+        return "Plant{" +
+                "commonName='" + commonName + '\'' +
+                '}';
+    }
 }

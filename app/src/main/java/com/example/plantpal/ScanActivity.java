@@ -3,31 +3,44 @@ package com.example.plantpal;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.util.Pair;
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
+import com.example.plantpal.ml.Mobilenetv2PlantIdentificationModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.card.MaterialCardView;
 
+import org.tensorflow.lite.DataType;
+import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
+
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class ScanActivity extends AppCompatActivity {
@@ -36,6 +49,10 @@ public class ScanActivity extends AppCompatActivity {
     private static final int REQUEST_STORAGE_PERMISSION = 1002;
     private static final int REQUEST_IMAGE_CAPTURE = 1003;
     private static final int REQUEST_IMAGE_PICK = 1004;
+
+    private PlantClassifier plantClassifier;
+
+    int imageSize = 224;
 
     private String currentPhotoPath;
     private MaterialCardView cameraButton;
@@ -47,6 +64,13 @@ public class ScanActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.scan_page);
+
+        try {
+            plantClassifier = new PlantClassifier(this);
+            Log.d("TFLite", "Model initialized successfully.");
+        } catch (IOException e) {
+            Log.e("TFLite", "Error initializing TFLite model: " + e.getMessage());
+        }
 
         cameraButton = findViewById(R.id.camera_button);
         galleryButton = findViewById(R.id.gallery_button);
@@ -62,7 +86,8 @@ public class ScanActivity extends AppCompatActivity {
         cameraButton.setOnClickListener(view -> checkCameraPermission());
         galleryButton.setOnClickListener(view -> checkGalleryPermission());
 
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {@Override
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int itemId = item.getItemId();
 
@@ -172,6 +197,7 @@ public class ScanActivity extends AppCompatActivity {
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(imageFileName, ".png", storageDir);
         currentPhotoPath = image.getAbsolutePath();
+        Log.d("ImagePicker", "Image path: " + currentPhotoPath);
         return image;
     }
 
@@ -185,5 +211,67 @@ public class ScanActivity extends AppCompatActivity {
         Intent pickPhotoIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         Log.d("ImagePicker", "Starting gallery activity");
         startActivityForResult(pickPhotoIntent, REQUEST_IMAGE_PICK);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            Uri imageUri = null;
+
+            if (requestCode == REQUEST_IMAGE_CAPTURE) {
+                File imgFile = new File(currentPhotoPath);
+                if (imgFile.exists()) {
+                    imageUri = Uri.fromFile(imgFile);
+                }
+            } else if (requestCode == REQUEST_IMAGE_PICK) {
+                imageUri = data.getData();
+            }
+
+            if (imageUri != null) {
+                Bitmap bitmap = getBitmapFromUri(imageUri);
+                runInference(bitmap, imageUri);
+            }
+        }
+    }
+
+    private Bitmap getBitmapFromUri(Uri uri) {
+        try {
+            return BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
+        } catch (FileNotFoundException e) {
+            Log.e("getBitmapFromUri", "Error loading image from URI: " + e.getMessage());
+            return null;
+        }
+    }
+
+    private void runInference(Bitmap bitmap, Uri photoUri) {
+        if (plantClassifier != null) {
+            List<Pair<String, Float>> resultsWithConfidence = plantClassifier.runInferenceAndGetAll(bitmap);
+
+            List<String> commonNameList = new ArrayList<>();
+            List<String> confidenceList = new ArrayList<>();
+
+            for (Pair<String, Float> result : resultsWithConfidence) {
+                commonNameList.add(result.first);
+
+                String confidence = String.format(Locale.getDefault(), "%.2f", result.second * 100);
+                confidenceList.add(confidence);
+            }
+
+            Log.d("InferenceResults", "Common names: " + commonNameList);
+            Log.d("InferenceResults", "Confidence: " + confidenceList);
+            Log.d("InferenceResults", "Image path: " + photoUri.toString());
+
+            Intent intent = new Intent(ScanActivity.this, ScanResultsActivity.class);
+
+            intent.putStringArrayListExtra("commonNameList", (ArrayList<String>) commonNameList);
+            intent.putStringArrayListExtra("confidenceList", (ArrayList<String>) confidenceList);
+            intent.putExtra("imageUri", photoUri.toString());
+
+            startActivity(intent);
+        } else {
+            Log.e("TFLite", "TFLite classifier is not initialized.");
+            Toast.makeText(this, "Error running inference.", Toast.LENGTH_SHORT).show();
+        }
     }
 }

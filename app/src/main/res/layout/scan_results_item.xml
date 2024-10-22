@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="16dp"
+    app:cardCornerRadius="16dp"
+    app:cardBackgroundColor="#FFFFFF">
+
+    <!-- Main Container for Scan Results Item -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <!-- Horizontal Layout to place image on the left and text on the right -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- Plant Image -->
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/scan_results_plant_image"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_plant_placeholder"
+                app:shapeAppearanceOverlay="@style/CustomImageCorner"
+                android:scaleType="centerCrop"/>
+
+            <!-- Vertical Layout for Plant Details -->
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:paddingStart="16dp">
+
+                <!-- Plant Common Name -->
+                <TextView
+                    android:id="@+id/scan_results_plant_common_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Common Name"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="#000000"
+                    android:fontFamily="@font/agrandir_regular"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentStart="true"/>
+
+                <!-- Plant Scientific Name -->
+                <TextView
+                    android:id="@+id/scan_results_plant_scientific_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Scientific Name"
+                    android:textSize="14sp"
+                    android:textColor="#666666"
+                    android:fontFamily="@font/agrandir_regular"
+                    android:layout_marginTop="6dp"
+                    android:layout_below="@id/scan_results_plant_common_name"
+                    android:layout_alignParentStart="true"/>
+
+                <!-- Scan Results Confidence -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentEnd="true"
+                    app:cardCornerRadius="30dp">
+
+                    <TextView
+                        android:id="@+id/scan_results_confidence"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Confidence Percentage"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="#000000"
+                        android:background="@drawable/edit_field_box"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="6dp"
+                        android:fontFamily="@font/agrandir_regular"/>
+                </com.google.android.material.card.MaterialCardView>
+            </RelativeLayout>
+        </LinearLayout>
+    </RelativeLayout>
+</com.google.android.material.card.MaterialCardView>

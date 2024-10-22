@@ -88,5 +88,8 @@
         <activity
             android:name=".PlantDetailActivity">
         </activity>
+        <activity
+            android:name=".ScanResultsActivity">
+        </activity>
     </application>
 </manifest>
