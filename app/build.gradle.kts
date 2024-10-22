@@ -39,6 +39,9 @@ android {
             excludes.add("META-INF/LICENSE.md")
         }
     }
+    buildFeatures {
+        mlModelBinding = true
+    }
 }
 
 dependencies {
@@ -52,6 +55,10 @@ dependencies {
     implementation("com.sun.mail:android-mail:1.6.6")
     implementation("com.sun.mail:android-activation:1.6.6")
     implementation("com.google.android.material:material:1.8.0")
+    implementation("org.tensorflow:tensorflow-lite:2.13.0")
+    implementation("org.tensorflow:tensorflow-lite-support:0.4.3")
+    implementation("org.tensorflow:tensorflow-lite-metadata:0.4.3")
+    implementation("org.tensorflow:tensorflow-lite-gpu:2.13.0")
 
     implementation(libs.appcompat)
     implementation(libs.material)
@@ -59,6 +66,8 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation(libs.firebase.database)
     implementation(libs.firebase.auth)
+    implementation(libs.tensorflow.lite.metadata)
+    implementation(libs.tensorflow.lite.gpu)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

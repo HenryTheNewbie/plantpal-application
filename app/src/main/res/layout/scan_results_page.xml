@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ScanResultsActivity">
+
+    <!-- Page Header -->
+    <RelativeLayout
+        android:id="@+id/scan_results_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/page_header"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:elevation="20dp"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/scan_results_back_button"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_alignParentStart="true"
+            android:src="@drawable/back_arrow_icon"
+            android:clickable="true"/>
+
+        <TextView
+            android:id="@+id/scan_results_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Scan Results"
+            android:textSize="20sp"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:fontFamily="@font/agrandir_wide"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/scan_results_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/scan_results_header"
+        android:padding="16dp"
+        android:orientation="vertical">
+
+        <!-- Plant Image -->
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/user_uploaded_plant_image"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/ic_plant_placeholder"
+            app:shapeAppearanceOverlay="@style/CustomImageCorner"
+            android:scaleType="centerCrop"/>
+
+        <!-- Matching Plants Section -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="16dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:layout_below="@id/user_uploaded_plant_image">
+
+            <!-- Matching Plants Recycler View -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/matching_plants_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </RelativeLayout>
+    </LinearLayout>
+</RelativeLayout>
