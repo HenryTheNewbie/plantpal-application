@@ -26,6 +26,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 import com.example.plantpal.ml.Mobilenetv2PlantIdentificationModel;
+import com.example.plantpal.ml.Mobilenetv2DiseaseDetectionModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.card.MaterialCardView;
 
@@ -51,6 +52,7 @@ public class ScanActivity extends AppCompatActivity {
     private static final int REQUEST_IMAGE_PICK = 1004;
 
     private PlantClassifier plantClassifier;
+    private DiseaseClassifier diseaseClassifier;
 
     int imageSize = 224;
 
@@ -67,6 +69,13 @@ public class ScanActivity extends AppCompatActivity {
 
         try {
             plantClassifier = new PlantClassifier(this);
+            Log.d("TFLite", "Model initialized successfully.");
+        } catch (IOException e) {
+            Log.e("TFLite", "Error initializing TFLite model: " + e.getMessage());
+        }
+
+        try {
+            diseaseClassifier = new DiseaseClassifier(this);
             Log.d("TFLite", "Model initialized successfully.");
         } catch (IOException e) {
             Log.e("TFLite", "Error initializing TFLite model: " + e.getMessage());
@@ -245,8 +254,9 @@ public class ScanActivity extends AppCompatActivity {
     }
 
     private void runInference(Bitmap bitmap, Uri photoUri) {
-        if (plantClassifier != null) {
+        if (plantClassifier != null && diseaseClassifier != null) {
             List<Pair<String, Float>> resultsWithConfidence = plantClassifier.runInferenceAndGetAll(bitmap);
+            Pair<String, Float> diseaseResult = diseaseClassifier.runInferenceAndGetTop(bitmap);
 
             List<String> commonNameList = new ArrayList<>();
             List<String> confidenceList = new ArrayList<>();
@@ -258,15 +268,24 @@ public class ScanActivity extends AppCompatActivity {
                 confidenceList.add(confidence);
             }
 
+            String diseaseCommonName = diseaseResult.first;
+            String diseaseConfidence = String.format(Locale.getDefault(), "%.2f", diseaseResult.second * 100);
+
             Log.d("InferenceResults", "Common names: " + commonNameList);
             Log.d("InferenceResults", "Confidence: " + confidenceList);
             Log.d("InferenceResults", "Image path: " + photoUri.toString());
+
+            Log.d("InferenceResults", "Disease common name: " + diseaseCommonName);
+            Log.d("InferenceResults", "Confidence: " + diseaseConfidence);
 
             Intent intent = new Intent(ScanActivity.this, ScanResultsActivity.class);
 
             intent.putStringArrayListExtra("commonNameList", (ArrayList<String>) commonNameList);
             intent.putStringArrayListExtra("confidenceList", (ArrayList<String>) confidenceList);
             intent.putExtra("imageUri", photoUri.toString());
+
+            intent.putExtra("diseaseCommonName", diseaseCommonName);
+            intent.putExtra("diseaseConfidence", diseaseConfidence);
 
             startActivity(intent);
         } else {

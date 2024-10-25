@@ -37,6 +37,9 @@ public class ScanResultsActivity extends AppCompatActivity {
     private ArrayList<Plant> plantList;
     private ArrayList<String> commonNameList;
     private ArrayList<String> confidenceList;
+    private String diseaseCommonName;
+    private String diseaseConfidence;
+    private PlantDisease plantDisease;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,9 +64,15 @@ public class ScanResultsActivity extends AppCompatActivity {
         confidenceList = intent.getStringArrayListExtra("confidenceList");
         imageUri = intent.getStringExtra("imageUri");
 
+        diseaseCommonName = intent.getStringExtra("diseaseCommonName");
+        diseaseConfidence = intent.getStringExtra("diseaseConfidence");
+
         Log.d("ScanResultsActivity", "commonNameList: " + commonNameList);
         Log.d("ScanResultsActivity", "confidenceList: " + confidenceList);
         Log.d("ScanResultsActivity", "imageUri: " + imageUri);
+
+        Log.d("ScanResultsActivity", "diseaseCommonName: " + diseaseCommonName);
+        Log.d("ScanResultsActivity", "diseaseConfidence: " + diseaseConfidence);
 
         if (imageUri != null) {
             Uri imageUriObj = Uri.parse(imageUri);
@@ -81,6 +90,16 @@ public class ScanResultsActivity extends AppCompatActivity {
 
         if (commonNameList != null && confidenceList != null) {
             fetchPlantData(commonNameList);
+        }
+
+        if (diseaseCommonName != null) {
+            fetchPlantDiseaseData(diseaseCommonName, new DiseaseDataCallback() {
+                @Override
+                public void onDiseaseDataFetched(PlantDisease plantDisease) {
+                    ScanResultsActivity.this.plantDisease = plantDisease;
+                    updateRecyclerView();
+                }
+            });
         }
     }
 
@@ -121,9 +140,43 @@ public class ScanResultsActivity extends AppCompatActivity {
         }
     }
 
+    private void fetchPlantDiseaseData(String diseaseCommonName, final DiseaseDataCallback callback) {
+        DatabaseReference diseasesRef = FirebaseDatabase.getInstance().getReference("plantDiseases");
+
+        diseasesRef.orderByChild("commonName").equalTo(diseaseCommonName)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        PlantDisease plantDisease = null;
+
+                        for (DataSnapshot diseaseSnapshot : dataSnapshot.getChildren()) {
+                            plantDisease = diseaseSnapshot.getValue(PlantDisease.class);
+                            break;
+                        }
+
+                        if (plantDisease != null) {
+                            callback.onDiseaseDataFetched(plantDisease);
+                        } else {
+                            callback.onDiseaseDataFetched(null);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Toast.makeText(ScanResultsActivity.this,
+                                "Failed to fetch disease data: " + databaseError.getMessage(),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    public interface DiseaseDataCallback {
+        void onDiseaseDataFetched(PlantDisease plantDisease);
+    }
+
     private void updateRecyclerView() {
         matchingPlantsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        matchingPlantsAdapter = new MatchingPlantsAdapter(this, plantList, confidenceList);
+        matchingPlantsAdapter = new MatchingPlantsAdapter(this, plantList, confidenceList, plantDisease);
         matchingPlantsRecyclerView.setAdapter(matchingPlantsAdapter);
     }
 }

@@ -1,0 +1,8 @@
+bacterial_spot=Bacterial Spot
+black_rot=Black Rot
+blight=Blight
+healthy=Healthy
+leaf_scorch=Leaf Scorch
+mold=Mold (Botrytis)
+powdery_mildew=Powdery Mildew
+rust=Rust

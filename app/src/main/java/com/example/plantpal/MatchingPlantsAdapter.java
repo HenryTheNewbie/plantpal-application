@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.squareup.picasso.Picasso;
 import com.example.plantpal.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MatchingPlantsAdapter extends RecyclerView.Adapter<MatchingPlantsAdapter.PlantViewHolder> {
@@ -21,11 +22,13 @@ public class MatchingPlantsAdapter extends RecyclerView.Adapter<MatchingPlantsAd
     private Context context;
     private List<Plant> plantList;
     private List<String> confidenceList;
+    private PlantDisease plantDisease;
 
-    public MatchingPlantsAdapter(Context context, List<Plant> plantList, List<String> confidenceList) {
+    public MatchingPlantsAdapter(Context context, List<Plant> plantList, List<String> confidenceList, PlantDisease plantDisease) {
         this.context = context;
         this.plantList = plantList;
         this.confidenceList = confidenceList;
+        this.plantDisease = plantDisease;
     }
 
     @NonNull
@@ -67,6 +70,17 @@ public class MatchingPlantsAdapter extends RecyclerView.Adapter<MatchingPlantsAd
             intent.putExtra("extraCareInfo", plant.getExtraCareInfo());
             intent.putExtra("category", plant.getCategory());
             intent.putExtra("herbalProperties", plant.getHerbalProperties());
+
+            if (plantDisease != null) {
+                intent.putExtra("diseaseCommonName", plantDisease.getCommonName());
+                intent.putExtra("diseaseScientificName", plantDisease.getScientificName());
+                intent.putExtra("diseaseDescription", plantDisease.getDescription());
+                intent.putStringArrayListExtra("visibleSymptoms", new ArrayList<>(plantDisease.getVisibleSymptoms()));
+                intent.putExtra("diseasePossibleCauses", plantDisease.getPossibleCauses());
+                intent.putExtra("diseasePrevention", plantDisease.getPrevention());
+                intent.putExtra("diseaseTreatmentSuggestion", plantDisease.getTreatmentSuggestion());
+            }
+
             context.startActivity(intent);
         });
     }
