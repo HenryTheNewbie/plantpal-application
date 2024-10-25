@@ -26,6 +26,8 @@ import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+
 public class PlantDetailActivity extends AppCompatActivity {
 
     private ImageView backButton;
@@ -37,6 +39,8 @@ public class PlantDetailActivity extends AppCompatActivity {
     private TextView plantExtraCareInfo;
     private RelativeLayout plantHerbalPropertiesContent;
     private TextView plantHerbalProperties;
+    private RelativeLayout diseaseContent;
+    private TextView diseaseCommonName, diseaseScientificName, diseaseDescription, diseasePossibleCauses, diseasePrevention, diseaseTreatmentSuggestion, diseaseVisibleSymptoms;
 
     private FirebaseDatabase database;
     private DatabaseReference myGardenRef;
@@ -70,6 +74,15 @@ public class PlantDetailActivity extends AppCompatActivity {
 
         plantHerbalPropertiesContent = findViewById(R.id.plant_herbal_properties_content);
 
+        diseaseContent = findViewById(R.id.plant_possible_disease_content);
+        diseaseCommonName = findViewById(R.id.detected_disease_common_name);
+        diseaseScientificName = findViewById(R.id.detected_disease_scientific_name);
+        diseaseDescription = findViewById(R.id.detected_disease_description);
+        diseasePossibleCauses = findViewById(R.id.disease_possible_causes_text);
+        diseasePrevention = findViewById(R.id.disease_prevention_method_text);
+        diseaseTreatmentSuggestion = findViewById(R.id.disease_treatment_suggestion_text);
+        diseaseVisibleSymptoms = findViewById(R.id.disease_visible_symptoms_text);
+
         backButton.setOnClickListener(v -> {
             finish();
         });
@@ -96,6 +109,14 @@ public class PlantDetailActivity extends AppCompatActivity {
         String category = intent.getStringExtra("category");
         String herbalProperties = intent.getStringExtra("herbalProperties");
 
+        String diseaseCommonNameText = intent.getStringExtra("diseaseCommonName");
+        String diseaseScientificNameText = intent.getStringExtra("diseaseScientificName");
+        String diseaseDescriptionText = intent.getStringExtra("diseaseDescription");
+        ArrayList<String> visibleSymptoms = intent.getStringArrayListExtra("visibleSymptoms");
+        String diseasePossibleCausesText = intent.getStringExtra("diseasePossibleCauses");
+        String diseasePreventionText = intent.getStringExtra("diseasePrevention");
+        String diseaseTreatmentSuggestionText = intent.getStringExtra("diseaseTreatmentSuggestion");
+
         plantCommonName.setText(commonName);
         plantScientificName.setText(scientificName);
         plantFamily.setText(family);
@@ -114,6 +135,33 @@ public class PlantDetailActivity extends AppCompatActivity {
         } else {
             plantHerbalPropertiesContent.setVisibility(View.VISIBLE);
             plantHerbalProperties.setText(herbalProperties);
+        }
+
+        if (diseaseCommonNameText != null) {
+            diseaseContent.setVisibility(View.VISIBLE);
+
+            diseaseCommonName.setText(diseaseCommonNameText);
+            diseaseScientificName.setText(diseaseScientificNameText);
+            diseaseDescription.setText(diseaseDescriptionText);
+            diseasePossibleCauses.setText(diseasePossibleCausesText);
+            diseasePrevention.setText(diseasePreventionText);
+            diseaseTreatmentSuggestion.setText(diseaseTreatmentSuggestionText);
+
+            if (visibleSymptoms != null && !visibleSymptoms.isEmpty()) {
+                StringBuilder visibleSymptomsText = new StringBuilder();
+                for (int i = 0; i < visibleSymptoms.size(); i++) {
+                    String symptom = visibleSymptoms.get(i);
+                    visibleSymptomsText.append(symptom);
+                    if (i < visibleSymptoms.size() - 1) {
+                        visibleSymptomsText.append("\n");
+                    }
+                }
+                diseaseVisibleSymptoms.setText(visibleSymptomsText.toString());
+            } else {
+                diseaseVisibleSymptoms.setText("No visible symptoms.");
+            }
+        } else {
+            diseaseContent.setVisibility(View.GONE);
         }
 
         loadImageFromURL(imageURL);
