@@ -33,6 +33,10 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -74,6 +78,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private String currentPhotoPath;
 
     private SharedPreferences sharedPreferences;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +99,8 @@ public class EditProfileActivity extends AppCompatActivity {
 
         sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
         String userEmail = sharedPreferences.getString("email", "User");
+
+        mAuth = FirebaseAuth.getInstance();
 
         tintOverlay.setBackgroundColor(Color.parseColor("#80000000"));
 
@@ -545,70 +552,64 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     private void verifyCurrentPassword(String currentPassword, String newUsername, String newBio, String newPassword) {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference usersRef = database.getReference("users");
-
-        String userEmail = sharedPreferences.getString("email", "User");
-
-        usersRef.orderByChild("email").equalTo(userEmail).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    for (DataSnapshot userSnapshot : snapshot.getChildren()) {
-                        String storedPassword = userSnapshot.child("password").getValue(String.class);
-                        String currentUserId = userSnapshot.getKey();
-
-                        if (storedPassword != null && storedPassword.equals(currentPassword)) {
-                            updateUsernameBioAndPassword(newUsername, newBio, newPassword);
-                        } else {
-                            Toast.makeText(EditProfileActivity.this, "Incorrect password. Please try again.", Toast.LENGTH_SHORT).show();
-                        }
-                        break;
-                    }
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            AuthCredential credential = EmailAuthProvider.getCredential(user.getEmail(), currentPassword);
+            user.reauthenticate(credential).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    updateUsernameBioAndPassword(newUsername, newBio, newPassword);
                 } else {
-                    Toast.makeText(EditProfileActivity.this, "User not found.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditProfileActivity.this, "Incorrect password. Please try again.", Toast.LENGTH_SHORT).show();
                 }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(EditProfileActivity.this, "Failed to retrieve user information.", Toast.LENGTH_SHORT).show();
-            }
-        });
+            });
+        } else {
+            Toast.makeText(EditProfileActivity.this, "User not authenticated.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void updateUsernameBioAndPassword(String newUsername, String newBio, String newPassword) {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference usersRef = database.getReference("users");
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        String userEmail = sharedPreferences.getString("email", "User");
+        if (user != null) {
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference usersRef = database.getReference("users");
+            String userEmail = sharedPreferences.getString("email", "User");
 
-        usersRef.orderByChild("email").equalTo(userEmail).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot userSnapshot : snapshot.getChildren()) {
-                    String userId = userSnapshot.getKey();
+            usersRef.orderByChild("email").equalTo(userEmail).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot userSnapshot : snapshot.getChildren()) {
+                        String userId = userSnapshot.getKey();
 
-                    if (!newUsername.isEmpty()) {
-                        usersRef.child(userId).child("username").setValue(newUsername);
+                        if (!newUsername.isEmpty()) {
+                            usersRef.child(userId).child("username").setValue(newUsername);
+                        }
+
+                        if (!newBio.isEmpty()) {
+                            usersRef.child(userId).child("bio").setValue(newBio);
+                        }
+
+                        if (!newPassword.isEmpty()) {
+                            user.updatePassword(newPassword).addOnCompleteListener(task -> {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(EditProfileActivity.this, "Profile updated successfully.", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(EditProfileActivity.this, "Failed to update password.", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        } else {
+                            Toast.makeText(EditProfileActivity.this, "Profile updated successfully.", Toast.LENGTH_SHORT).show();
+                        }
                     }
-
-                    if (!newBio.isEmpty()) {
-                        usersRef.child(userId).child("bio").setValue(newBio);
-                    }
-
-                    if (!newPassword.isEmpty()) {
-                        usersRef.child(userId).child("password").setValue(newPassword);
-                    }
-
-                    Toast.makeText(EditProfileActivity.this, "Profile updated successfully.", Toast.LENGTH_SHORT).show();
                 }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(EditProfileActivity.this, "Failed to update profile.", Toast.LENGTH_SHORT).show();
-            }
-        });
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Toast.makeText(EditProfileActivity.this, "Failed to update profile.", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            Toast.makeText(EditProfileActivity.this, "User not authenticated.", Toast.LENGTH_SHORT).show();
+        }
     }
 }

@@ -1,13 +1,10 @@
 package com.example.plantpal;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 public class ForgotPasswordActivity extends AppCompatActivity {
 
@@ -20,41 +17,14 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
         fragmentManager = getSupportFragmentManager();
         if (savedInstanceState == null) {
-            showStep1EmailFragment();
+            showEmailFragment();
         }
     }
 
-    private void showStep1EmailFragment() {
-        Fragment step1EmailFragment = new Step1EmailFragment();
+    public void showEmailFragment() {
+        Fragment emailFragment = new EmailFragment();
         fragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, step1EmailFragment)
-                .commit();
-    }
-
-    public void showStep2VerificationFragment(String otp, String email) {
-        Fragment step2VerificationFragment = new Step2VerificationFragment();
-
-        Bundle args = new Bundle();
-        args.putString("currentOtpCode", otp);
-        args.putString("email", email);
-        step2VerificationFragment.setArguments(args);
-
-        fragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, step2VerificationFragment)
-                .addToBackStack(null)
-                .commit();
-    }
-
-    public void showStep3ResetPasswordFragment(String email) {
-        Fragment step3ResetPasswordFragment = new Step3ResetPasswordFragment();
-
-        Bundle args = new Bundle();
-        args.putString("email", email);
-        step3ResetPasswordFragment.setArguments(args);
-
-        fragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, step3ResetPasswordFragment)
-                .addToBackStack(null)
+                .replace(R.id.fragment_container, emailFragment)
                 .commit();
     }
 
