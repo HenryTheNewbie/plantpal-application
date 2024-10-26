@@ -196,15 +196,21 @@ public class ForumDetailActivity extends AppCompatActivity {
     }
 
     private void loadAuthorBio(String author) {
-        DatabaseReference bioRef = FirebaseDatabase.getInstance().getReference().child("users").child(author).child("bio");
-        bioRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference().child("users");
+
+        usersRef.orderByChild("username").equalTo(author).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    String bio = dataSnapshot.getValue(String.class);
-                    if (bio != null) {
-                        bioTextView.setText(bio);
-                        bioTextView.setVisibility(View.VISIBLE);
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    for (DataSnapshot userSnapshot : snapshot.getChildren()) {
+                        String bio = userSnapshot.child("bio").getValue(String.class);
+                        if (bio != null) {
+                            bioTextView.setText(bio);
+                            bioTextView.setVisibility(View.VISIBLE);
+                        } else {
+                            bioTextView.setVisibility(View.GONE);
+                        }
+                        break;
                     }
                 } else {
                     bioTextView.setVisibility(View.GONE);
@@ -212,31 +218,37 @@ public class ForumDetailActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e("ForumDetailActivity", "Failed to load author bio: " + databaseError.getMessage());
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("ForumDetailActivity", "Failed to load author bio: " + error.getMessage());
                 bioTextView.setVisibility(View.GONE);
             }
         });
     }
 
+    private void loadAuthorAvatar(String author) {
+        DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference().child("users");
 
-    private void loadAuthorAvatar(String authorUsername) {
-        databaseReference.child("users").child(authorUsername).child("profilePictureUrl").addListenerForSingleValueEvent(new ValueEventListener() {
+        usersRef.orderByChild("username").equalTo(author).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String profilePictureUrl = dataSnapshot.getValue(String.class);
-                if (profilePictureUrl != null && !profilePictureUrl.isEmpty()) {
-                    Picasso.get()
-                            .load(profilePictureUrl)
-                            .placeholder(R.drawable.ic_profile_placeholder)
-                            .error(R.drawable.ic_profile_placeholder)
-                            .into(forumAuthorAvatar);
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    for (DataSnapshot userSnapshot : snapshot.getChildren()) {
+                        String profilePictureUrl = userSnapshot.child("profilePictureUrl").getValue(String.class);
+                        if (profilePictureUrl != null && !profilePictureUrl.isEmpty()) {
+                            Picasso.get()
+                                    .load(profilePictureUrl)
+                                    .placeholder(R.drawable.ic_profile_placeholder)
+                                    .error(R.drawable.ic_profile_placeholder)
+                                    .into(forumAuthorAvatar);
+                        }
+                        break;
+                    }
                 }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e("ForumDetailActivity", "Failed to load author avatar: " + databaseError.getMessage());
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("ForumDetailActivity", "Failed to load author avatar: " + error.getMessage());
             }
         });
     }
@@ -401,36 +413,49 @@ public class ForumDetailActivity extends AppCompatActivity {
     }
 
     public void loadRepliesAuthorAvatar(String replyAuthorUsername, ImageView replyAuthorAvatar) {
-        databaseReference.child("users").child(replyAuthorUsername).child("profilePictureUrl").addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference().child("users");
+
+        usersRef.orderByChild("username").equalTo(replyAuthorUsername).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String profilePictureUrl = dataSnapshot.getValue(String.class);
-                if (profilePictureUrl != null && !profilePictureUrl.isEmpty()) {
-                    Picasso.get()
-                            .load(profilePictureUrl)
-                            .placeholder(R.drawable.ic_profile_placeholder)
-                            .error(R.drawable.ic_profile_placeholder)
-                            .into(replyAuthorAvatar);
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    for (DataSnapshot userSnapshot : snapshot.getChildren()) {
+                        String profilePictureUrl = userSnapshot.child("profilePictureUrl").getValue(String.class);
+                        if (profilePictureUrl != null && !profilePictureUrl.isEmpty()) {
+                            Picasso.get()
+                                    .load(profilePictureUrl)
+                                    .placeholder(R.drawable.ic_profile_placeholder)
+                                    .error(R.drawable.ic_profile_placeholder)
+                                    .into(replyAuthorAvatar);
+                        }
+                        break;
+                    }
                 }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e("ForumDetailActivity", "Failed to load author avatar: " + databaseError.getMessage());
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("ForumDetailActivity", "Failed to load author avatar: " + error.getMessage());
             }
         });
     }
 
     public void loadRepliesAuthorBio(String replyAuthorUsername, TextView replyAuthorBio) {
-        DatabaseReference bioRef = FirebaseDatabase.getInstance().getReference().child("users").child(replyAuthorUsername).child("bio");
-        bioRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference().child("users");
+
+        usersRef.orderByChild("username").equalTo(replyAuthorUsername).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    String bio = dataSnapshot.getValue(String.class);
-                    if (bio != null) {
-                        replyAuthorBio.setText(bio);
-                        replyAuthorBio.setVisibility(View.VISIBLE);
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    for (DataSnapshot userSnapshot : snapshot.getChildren()) {
+                        String bio = userSnapshot.child("bio").getValue(String.class);
+                        if (bio != null) {
+                            replyAuthorBio.setText(bio);
+                            replyAuthorBio.setVisibility(View.VISIBLE);
+                        } else {
+                            replyAuthorBio.setVisibility(View.GONE);
+                        }
+                        break;
                     }
                 } else {
                     replyAuthorBio.setVisibility(View.GONE);
@@ -438,8 +463,8 @@ public class ForumDetailActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e("ForumDetailActivity", "Failed to load author bio: " + databaseError.getMessage());
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("ForumDetailActivity", "Failed to load author bio: " + error.getMessage());
                 replyAuthorBio.setVisibility(View.GONE);
             }
         });
