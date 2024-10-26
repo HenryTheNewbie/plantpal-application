@@ -35,7 +35,7 @@
 
     <EditText
             android:id="@+id/email"
-            android:layout_width="345dp"
+            android:layout_width="320dp"
             android:layout_height="50dp"
             android:background="@drawable/edit_field_box"
             android:drawableStart="@drawable/email_icon"
@@ -56,7 +56,7 @@
 
         <EditText
             android:id="@+id/password"
-            android:layout_width="345dp"
+            android:layout_width="320dp"
             android:layout_height="50dp"
             android:background="@drawable/edit_field_box"
             android:drawableStart="@drawable/lock_icon"
@@ -69,21 +69,23 @@
             android:fontFamily="@font/agrandir_regular"/>
     </com.google.android.material.card.MaterialCardView>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_marginTop="10dp"
         android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp">
+        android:layout_marginEnd="30dp"
+        android:gravity="center_vertical">
 
         <CheckBox
             android:id="@+id/remember_me"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
             android:text="Stay Logged In"
             android:textColor="@color/black"
             android:textSize="16sp"
+            android:layout_marginEnd="26dp"
             android:fontFamily="@font/agrandir_regular"
             android:buttonTint="@color/black"/>
 
@@ -91,16 +93,16 @@
             android:id="@+id/forgot_password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
             android:text="Forgot Password?"
             android:textColor="@color/black"
             android:textSize="16sp"
-            android:padding="14dp"
+            android:padding="8dp"
+            android:layout_marginStart="26dp"
             android:fontFamily="@font/agrandir_regular"
             android:clickable="true"
             android:focusable="true"
             android:onClick="openForgotPasswordPage"/>
-    </RelativeLayout>
+    </LinearLayout>
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="wrap_content"
@@ -111,7 +113,7 @@
 
         <Button
             android:id="@+id/login_button"
-            android:layout_width="345dp"
+            android:layout_width="325dp"
             android:layout_height="50dp"
             android:background="@drawable/edit_field_box"
             android:text="Login"

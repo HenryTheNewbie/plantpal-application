@@ -75,7 +75,7 @@
 
                 <EditText
                     android:id="@+id/forum_title_edit_text"
-                    android:layout_width="345dp"
+                    android:layout_width="300dp"
                     android:layout_height="50dp"
                     android:background="@drawable/edit_field_box"
                     android:hint="Enter Forum Title..."
@@ -108,7 +108,7 @@
 
                 <EditText
                     android:id="@+id/forum_context_edit_text"
-                    android:layout_width="345dp"
+                    android:layout_width="300dp"
                     android:layout_height="200dp"
                     android:background="@drawable/edit_field_box"
                     android:hint="Enter Forum Context..."
@@ -163,7 +163,7 @@
 
                 <Button
                     android:id="@+id/create_forum_button"
-                    android:layout_width="345dp"
+                    android:layout_width="300dp"
                     android:layout_height="50dp"
                     android:background="@drawable/edit_field_box"
                     android:text="Create Forum"

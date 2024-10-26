@@ -89,7 +89,7 @@
             android:text="This is the user's bio."
             android:textSize="14sp"
             android:textColor="#666666"
-            android:maxWidth="150dp"
+            android:maxWidth="120dp"
             android:ellipsize="end"
             android:maxLines="2"
             android:fontFamily="@font/agrandir_regular"/>

@@ -62,18 +62,25 @@
             app:cardCornerRadius="30dp"
             app:cardElevation="10dp">
 
-            <EditText
-                android:id="@+id/email"
-                android:layout_width="345dp"
-                android:layout_height="50dp"
-                android:background="@drawable/edit_field_box"
-                android:drawableStart="@drawable/email_icon"
-                android:drawablePadding="8dp"
-                android:hint="Email"
-                android:padding="8dp"
-                android:textColor="@color/black"
-                android:textColorHighlight="@color/cardview_dark_background"
-                android:fontFamily="@font/agrandir_regular"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/email"
+                    android:layout_width="300dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/edit_field_box"
+                    android:drawableStart="@drawable/email_icon"
+                    android:drawablePadding="8dp"
+                    android:hint="Email"
+                    android:padding="8dp"
+                    android:textColor="@color/black"
+                    android:textColorHighlight="@color/cardview_dark_background"
+                    android:fontFamily="@font/agrandir_regular"/>
+            </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
@@ -83,17 +90,25 @@
             app:cardCornerRadius="30dp"
             app:cardElevation="10dp">
 
-            <Button
-                android:id="@+id/send_email_button"
-                android:layout_width="345dp"
-                android:layout_height="50dp"
-                android:background="@drawable/edit_field_box"
-                android:text="Send Email"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:textColor="@color/black"
-                android:fontFamily="@font/agrandir_regular"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/send_email_button"
+                    android:layout_width="300dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/edit_field_box"
+                    android:text="Send Email"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/agrandir_regular"/>
+            </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
+
 
     </LinearLayout>
 

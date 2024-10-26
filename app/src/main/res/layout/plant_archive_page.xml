@@ -70,6 +70,8 @@
         android:layout_below="@id/search_container"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="12dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
         android:text="Start searching for plants to explore the archive!"
         android:textSize="16sp"
         android:textColor="#888888"
