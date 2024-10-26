@@ -109,7 +109,7 @@
 
             <EditText
                 android:id="@+id/edit_username"
-                android:layout_width="345dp"
+                android:layout_width="300dp"
                 android:layout_height="50dp"
                 android:background="@drawable/edit_field_box"
                 android:drawableStart="@drawable/account_icon"
@@ -143,7 +143,7 @@
 
             <EditText
                 android:id="@+id/edit_bio"
-                android:layout_width="345dp"
+                android:layout_width="300dp"
                 android:layout_height="50dp"
                 android:background="@drawable/edit_field_box"
                 android:drawableStart="@drawable/bio_icon"
@@ -177,7 +177,7 @@
 
             <EditText
                 android:id="@+id/edit_new_password"
-                android:layout_width="345dp"
+                android:layout_width="300dp"
                 android:layout_height="50dp"
                 android:background="@drawable/edit_field_box"
                 android:drawableStart="@drawable/lock_icon"
@@ -212,7 +212,7 @@
 
             <EditText
                 android:id="@+id/edit_confirm_new_password"
-                android:layout_width="345dp"
+                android:layout_width="300dp"
                 android:layout_height="50dp"
                 android:background="@drawable/edit_field_box"
                 android:drawableStart="@drawable/lock_icon"
@@ -236,7 +236,7 @@
 
             <Button
                 android:id="@+id/save_changes_button"
-                android:layout_width="345dp"
+                android:layout_width="300dp"
                 android:layout_height="50dp"
                 android:background="@drawable/edit_field_box"
                 android:text="Save Changes"
