@@ -1,7 +1,15 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.PlantPal" parent="Theme.Material3.Light.NoActionBar">
-        <!-- Customize your dark theme here. -->
+        <!-- Customize your light theme here. -->
         <item name="colorPrimary">@color/white</item>
+        <!-- Set the status bar color to black -->
+        <item name="android:statusBarColor">#000000</item>
+        <!-- Ensure icons stay light (white) -->
+        <item name="android:windowLightStatusBar">false</item>
+        <!-- Set the navigation bar color to black -->
+        <item name="android:navigationBarColor">#000000</item>
+        <!-- Set the background color to white -->
+        <item name="android:windowBackground">@color/light_grass_green</item>
     </style>
 </resources>
